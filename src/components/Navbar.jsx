@@ -11,7 +11,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const { isAdmin, logout } = useAuth();
+  const { isAdmin, logout, login } = useAuth();
   const { toast } = useToast();
   const location = useLocation();
   const navigate = useNavigate();
