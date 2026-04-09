@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toaster';
+import { AuthProvider } from '@/context/AuthContext';
+import { BlogProvider } from '@/context/BlogContext';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Home from '@/pages/Home';
@@ -40,7 +42,11 @@ const Layout = () => {
 function App() {
   return (
     <Router>
-      <Layout />
+      <AuthProvider>
+        <BlogProvider>
+          <Layout />
+        </BlogProvider>
+      </AuthProvider>
     </Router>
   );
 }

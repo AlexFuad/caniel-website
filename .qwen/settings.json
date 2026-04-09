@@ -9,7 +9,9 @@
       "Bash(git remote *)",
       "Bash(git add *)",
       "Bash(git commit *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Read(d:\\My Files\\Developer\\Javascript\\Caniel\\Website/**)",
+      "Bash(findstr *)"
     ]
   },
   "$version": 3

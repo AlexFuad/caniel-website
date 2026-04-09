@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input.jsx';
 import { Label } from '@/components/ui/label.jsx';
 import { useToast } from '@/components/ui/use-toast.js';
 import { Eye, EyeOff, Shield, Lock, Mail, Loader2 } from 'lucide-react';
+import Recaptcha from './Recaptcha.jsx';
 
 const LoginDialog = ({ isOpen, onOpenChange, onLogin }) => {
   const [email, setEmail] = useState('');
@@ -19,6 +20,8 @@ const LoginDialog = ({ isOpen, onOpenChange, onLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState(null);
+  const [isRecaptchaVerified, setIsRecaptchaVerified] = useState(false);
   const { toast } = useToast();
 
   const validateEmail = (email) => {
@@ -54,20 +57,36 @@ const LoginDialog = ({ isOpen, onOpenChange, onLogin }) => {
       return;
     }
 
+    if (!isRecaptchaVerified) {
+      toast({
+        title: "Verifikasi Diperlukan",
+        description: "Silakan selesaikan verifikasi reCAPTCHA terlebih dahulu.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
 
-    // Simulate network delay for better UX
-    setTimeout(() => {
-      const success = onLogin(email, password);
+    setTimeout(async () => {
+      const success = await onLogin(email, password, recaptchaToken);
       setIsLoading(false);
-      
+
       if (success) {
         onOpenChange(false);
         setEmail('');
         setPassword('');
         setShowPassword(false);
         setRememberMe(false);
+        setRecaptchaToken(null);
+        setIsRecaptchaVerified(false);
+        toast({
+          title: "Login Berhasil!",
+          description: "Selamat datang di CMS Admin!",
+        });
       } else {
+        setIsRecaptchaVerified(false);
+        setRecaptchaToken(null);
         toast({
           title: "Login Gagal",
           description: "Email atau password yang Anda masukkan salah.",
@@ -83,8 +102,31 @@ const LoginDialog = ({ isOpen, onOpenChange, onLogin }) => {
     }
   };
 
+  const handleRecaptchaVerify = (token) => {
+    setRecaptchaToken(token);
+    setIsRecaptchaVerified(true);
+  };
+
+  const handleRecaptchaExpire = () => {
+    setRecaptchaToken(null);
+    setIsRecaptchaVerified(false);
+  };
+
+  const handleDialogClose = (open) => {
+    onOpenChange(open);
+    if (!open) {
+      // Reset form when dialog closes
+      setEmail('');
+      setPassword('');
+      setShowPassword(false);
+      setRememberMe(false);
+      setRecaptchaToken(null);
+      setIsRecaptchaVerified(false);
+    }
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+    <Dialog open={isOpen} onOpenChange={handleDialogClose}>
       <DialogContent className="sm:max-w-[450px] glass-effect text-white border border-slate-600/50 shadow-2xl">
         <DialogHeader className="space-y-4">
           <div className="flex items-center justify-center mb-2">
@@ -154,7 +196,7 @@ const LoginDialog = ({ isOpen, onOpenChange, onLogin }) => {
               />
               <span className="text-gray-400">Ingat saya</span>
             </label>
-            <button 
+            <button
               type="button"
               className="text-blue-400 hover:text-blue-300 transition-colors"
               onClick={() => toast({ title: "Info", description: "Hubungi administrator untuk reset password" })}
@@ -162,13 +204,32 @@ const LoginDialog = ({ isOpen, onOpenChange, onLogin }) => {
               Lupa password?
             </button>
           </div>
+
+          {/* reCAPTCHA Section */}
+          <div className="space-y-2 pt-2">
+            <Label className="text-sm font-medium text-gray-300 flex items-center gap-2">
+              <Shield className="h-4 w-4" />
+              Keamanan
+            </Label>
+            <Recaptcha
+              onVerify={handleRecaptchaVerify}
+              onExpire={handleRecaptchaExpire}
+              onError={() => {
+                toast({
+                  title: "reCAPTCHA Error",
+                  description: "Gagal memuat reCAPTCHA. Menggunakan mode development.",
+                  variant: "destructive",
+                });
+              }}
+            />
+          </div>
         </div>
-        
+
         <DialogFooter className="flex-col gap-2">
-          <Button 
-            onClick={handleLoginAttempt} 
-            disabled={isLoading}
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 h-11 font-medium"
+          <Button
+            onClick={handleLoginAttempt}
+            disabled={isLoading || !isRecaptchaVerified}
+            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 h-11 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <>

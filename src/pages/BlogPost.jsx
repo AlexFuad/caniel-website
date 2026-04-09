@@ -5,27 +5,25 @@ import { motion } from 'framer-motion';
 import { Calendar, User, Clock, ArrowLeft, Twitter, Facebook, Linkedin, Link as LinkIcon, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import { useBlog } from '@/context/BlogContext';
 const BlogPost = () => {
-  const {
-    slug
-  } = useParams();
+  const { slug } = useParams();
   const [post, setPost] = useState(null);
   const [recentPosts, setRecentPosts] = useState([]);
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const navigate = useNavigate();
+  const { getPostBySlug, getRecentPosts } = useBlog();
+  
   useEffect(() => {
-    const storedPosts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
-    const currentPost = storedPosts.find(p => p.slug === slug);
+    const currentPost = getPostBySlug(slug);
     if (currentPost) {
       setPost(currentPost);
-      setRecentPosts(storedPosts.filter(p => p.id !== currentPost.id).slice(0, 3));
+      const allRecent = getRecentPosts(4);
+      setRecentPosts(allRecent.filter(p => p.id !== currentPost.id).slice(0, 3));
     } else {
-      // Handle post not found, maybe redirect or show a 404 component
       navigate('/blog');
     }
-  }, [slug, navigate]);
+  }, [slug, navigate, getPostBySlug, getRecentPosts]);
   const handleShare = platform => {
     const url = window.location.href;
     const text = `Check out this article from Caniel Agency: ${post.title}`;
@@ -125,9 +123,9 @@ const BlogPost = () => {
           }} transition={{
             delay: 0.2,
             duration: 0.7
-          }} className="prose prose-invert prose-lg max-w-none lg:col-span-11">
+          }} className="lg:col-span-11">
               <div
-                className="text-gray-300 leading-relaxed"
+                className="wysiwyg-content text-gray-300 leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
 

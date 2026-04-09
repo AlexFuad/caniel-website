@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Lock, LogOut, Shield } from 'lucide-react';
+import { Menu, X, Lock, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/components/ui/use-toast';
+import { useAuth } from '@/context/AuthContext';
+import { useToast } from '@/components/ui/use-toast.js';
 import LoginDialog from '@/components/auth/LoginDialog.jsx';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const { isAdmin, logout } = useAuth();
+  const { toast } = useToast();
   const location = useLocation();
   const navigate = useNavigate();
-  const { toast } = useToast();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,34 +24,14 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    const adminStatus = localStorage.getItem('isAdmin') === 'true';
-    setIsAdmin(adminStatus);
-  }, []);
-
-  const handleLogin = (email, password) => {
-    if (email === 'admin@caniel.my.id' && password === '4dL14@23#02') {
-      setIsAdmin(true);
-      localStorage.setItem('isAdmin', 'true');
-      toast({ 
-        title: "Login Berhasil!", 
-        description: "Selamat datang di CMS Admin!",
-        variant: "default"
-      });
-      navigate('/admin/cms');
-      return true;
-    }
-    return false;
-  };
-
   const handleLogout = () => {
-    setIsAdmin(false);
-    localStorage.removeItem('isAdmin');
-    toast({ 
-      title: "Logout Berhasil", 
-      description: "Anda telah keluar dari CMS Admin." 
+    logout();
+    toast({
+      title: "Logout Berhasil",
+      description: "Anda telah keluar dari CMS Admin.",
     });
   };
+
   const navItems = [{
     name: 'Beranda',
     path: '/'
@@ -88,18 +69,18 @@ const Navbar = () => {
               </Link>)}
             
             {/* CMS Login Button */}
-            <Button 
-              onClick={() => isAdmin ? navigate('/admin/cms') : setIsLoginOpen(true)}
+            <Button
+              onClick={() => isAdmin ? handleLogout() : setIsLoginOpen(true)}
               className={`flex items-center gap-2 h-9 px-4 ${
-                isAdmin 
-                  ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700' 
+                isAdmin
+                  ? 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800'
                   : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
               }`}
             >
               {isAdmin ? (
                 <>
-                  <Shield className="h-4 w-4" />
-                  <span>CMS</span>
+                  <X className="h-4 w-4" />
+                  <span>Logout</span>
                 </>
               ) : (
                 <>
@@ -135,21 +116,25 @@ const Navbar = () => {
               {navItems.map(item => <Link key={item.path} to={item.path} onClick={() => setIsOpen(false)} className={`block py-2 text-sm font-medium transition-colors ${location.pathname === item.path ? 'text-blue-400' : 'text-gray-300 hover:text-white'}`}>
                   {item.name}
                 </Link>)}
-              <Button 
+              <Button
                 onClick={() => {
                   setIsOpen(false);
-                  isAdmin ? navigate('/admin/cms') : setIsLoginOpen(true);
+                  if (isAdmin) {
+                    handleLogout();
+                  } else {
+                    setIsLoginOpen(true);
+                  }
                 }}
                 className={`w-full flex items-center justify-center gap-2 mt-4 ${
-                  isAdmin 
-                    ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700' 
+                  isAdmin
+                    ? 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800'
                     : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
                 }`}
               >
                 {isAdmin ? (
                   <>
-                    <Shield className="h-4 w-4" />
-                    <span>Open CMS</span>
+                    <X className="h-4 w-4" />
+                    <span>Logout</span>
                   </>
                 ) : (
                   <>
@@ -163,10 +148,10 @@ const Navbar = () => {
       </AnimatePresence>
 
       {/* Login Dialog */}
-      <LoginDialog 
-        isOpen={isLoginOpen} 
-        onOpenChange={setIsLoginOpen} 
-        onLogin={handleLogin} 
+      <LoginDialog
+        isOpen={isLoginOpen}
+        onOpenChange={setIsLoginOpen}
+        onLogin={login}
       />
     </motion.nav>;
 };

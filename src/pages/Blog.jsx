@@ -2,109 +2,54 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import slugify from 'slugify';
-import { 
-  Calendar, User, Clock, ArrowRight, Search, Tag, TrendingUp, Code, Users, Settings, Lightbulb, PlusCircle, Edit, Trash2, Lock, Unlock, LogOut, LayoutDashboard
+import {
+  Calendar, User, Clock, ArrowRight, Search, Tag, TrendingUp, Code, Users, Settings, Lightbulb, PlusCircle, Edit, Trash2, LogOut, LayoutDashboard
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import { useAuth } from '@/context/AuthContext';
+import { useBlog } from '@/context/BlogContext';
 import ArticleEditor from '@/components/blog/ArticleEditor';
 import DeleteConfirmation from '@/components/blog/DeleteConfirmation';
 import LoginDialog from '@/components/auth/LoginDialog.jsx';
 
-const initialBlogPosts = [
-  { id: 1, slug: '10-tren-web-development-terbaru-di-2024', title: '10 Tren Web Development Terbaru di 2024', excerpt: 'Pelajari tren terbaru dalam web development yang akan mendominasi industri teknologi di tahun 2024, mulai dari AI integration hingga progressive web apps.', content: '<p>Ini adalah konten lengkap tentang tren web development terbaru.</p>', category: 'web-development', author: 'Daniel RN', date: '2024-01-15', readTime: '8 menit', image: 'Modern web development trends 2024 with coding interface', tags: ['React', 'Next.js', 'AI', 'PWA', 'Web3'], featured: true, published: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-  { id: 2, slug: 'strategi-digital-marketing-untuk-umkm', title: 'Strategi Digital Marketing untuk UMKM', excerpt: 'Panduan lengkap strategi digital marketing yang efektif dan terjangkau untuk usaha mikro, kecil, dan menengah di Indonesia.', content: '<p>Ini adalah panduan strategi digital marketing untuk UMKM.</p>', category: 'digital-marketing', author: 'Alex Fuad', date: '2024-01-12', readTime: '6 menit', image: 'Digital marketing strategy for small business with social media', tags: ['Social Media', 'Google Ads', 'SEO', 'Content Marketing'], featured: true, published: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-  { id: 3, slug: 'cara-memilih-technology-stack-yang-tepat', title: 'Cara Memilih Technology Stack yang Tepat', excerpt: 'Tips memilih kombinasi teknologi yang tepat untuk proyek web development Anda berdasarkan kebutuhan bisnis dan skalabilitas.', content: '<p>Ini adalah panduan memilih technology stack.</p>', category: 'technology', author: 'Eca Tatianna', date: '2024-01-10', readTime: '10 menit', image: 'Technology stack selection with various programming languages', tags: ['Frontend', 'Backend', 'Database', 'DevOps'], featured: false, published: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-  { id: 4, slug: 'optimasi-seo-untuk-website-bisnis', title: 'Optimasi SEO untuk Website Bisnis', excerpt: 'Teknik-teknik SEO terbaru yang dapat meningkatkan ranking website bisnis Anda di mesin pencari Google dan Bing.', content: '<p>Ini adalah panduan optimasi SEO untuk website bisnis.</p>', category: 'digital-marketing', author: 'Aprilianti P', date: '2024-01-08', readTime: '7 menit', image: 'SEO optimization dashboard with analytics and keyword research', tags: ['SEO', 'Google', 'Keywords', 'Analytics'], featured: false, published: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-  { id: 5, slug: 'transformasi-digital-untuk-perusahaan-tradisional', title: 'Transformasi Digital untuk Perusahaan Tradisional', excerpt: 'Langkah-langkah praktis untuk memulai transformasi digital di perusahaan tradisional tanpa mengganggu operasional yang sudah berjalan.', content: '<p>Ini adalah panduan transformasi digital.</p>', category: 'business', author: 'Alex Fuad', date: '2024-01-05', readTime: '12 menit', image: 'Digital transformation in traditional business with modern technology', tags: ['Digital Transformation', 'Business Strategy', 'Change Management'], featured: false, published: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-];
-
 const Blog = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [blogPosts, setBlogPosts] = useState([]);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [currentArticle, setCurrentArticle] = useState(null);
+  
+  const { isAdmin, logout, login } = useAuth();
+  const { posts, isInitialized, savePost, deletePost, getPublishedPosts, getFeaturedPosts, getRecentPosts } = useBlog();
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    let storedPosts = localStorage.getItem('blogPosts');
-    if (!storedPosts || JSON.parse(storedPosts).length === 0) {
-      const postsWithSlugs = initialBlogPosts.map(p => ({...p, slug: slugify(p.title, { lower: true, strict: true })}));
-      localStorage.setItem('blogPosts', JSON.stringify(postsWithSlugs));
-      storedPosts = JSON.stringify(postsWithSlugs);
-    }
-    setBlogPosts(JSON.parse(storedPosts));
-    
-    const adminStatus = localStorage.getItem('isAdmin') === 'true';
-    setIsAdmin(adminStatus);
-  }, []);
-
-  const savePostsToStorage = (posts) => {
-    localStorage.setItem('blogPosts', JSON.stringify(posts));
-    setBlogPosts(posts);
-  };
-
-  const togglePublishStatus = (post) => {
-    const updatedPosts = blogPosts.map(p => 
-      p.id === post.id 
-        ? { ...p, published: !p.published, updatedAt: new Date().toISOString() }
-        : p
-    );
-    savePostsToStorage(updatedPosts);
-    toast({
-      title: post.published ? "Artikel Di-unpublish" : "Artikel Dipublish",
-      description: post.published 
-        ? "Artikel sekarang tidak lagi terlihat publik." 
-        : "Artikel sekarang terlihat oleh publik.",
-    });
-  };
-  
-  const handleLogin = (email, password) => {
-    if (email === 'admin@caniel.my.id' && password === '4dL14@23#02') {
-        setIsAdmin(true);
-        localStorage.setItem('isAdmin', 'true');
-        toast({ title: "Login Berhasil!", description: "Selamat datang, Admin!" });
-        return true;
-    }
-    return false;
-  };
+  const publishedPosts = getPublishedPosts();
+  const featuredPosts = getFeaturedPosts(2);
+  const recentPosts = getRecentPosts(5);
 
   const handleLogout = () => {
-    setIsAdmin(false);
-    localStorage.removeItem('isAdmin');
-    toast({ title: "Logout Berhasil", description: "Anda telah keluar dari Mode Admin." });
+    logout();
+    toast({
+      title: "Logout Berhasil",
+      description: "Anda telah keluar dari Mode Admin.",
+    });
   };
-  
-  const handleAdminAction = () => {
-    if (isAdmin) {
-      handleLogout();
-    } else {
-      setIsLoginOpen(true);
-    }
-  };
-
 
   const handleAction = (action) => toast({ title: `🚧 Fitur ${action} sedang dalam pengembangan!`, description: "Anda bisa meminta implementasi fitur ini di prompt berikutnya! 🚀" });
 
   const handleSaveArticle = (article) => {
-    let updatedPosts;
-    if (blogPosts.some(p => p.id === article.id)) {
-      updatedPosts = blogPosts.map(p => p.id === article.id ? { ...article, updatedAt: new Date().toISOString() } : p);
-    } else {
-      updatedPosts = [{ ...article, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }, ...blogPosts];
-    }
-    savePostsToStorage(updatedPosts);
+    savePost(article);
+    toast({
+      title: "Artikel Berhasil Disimpan!",
+      description: "Perubahan Anda telah disimpan.",
+    });
   };
-  
+
   const handleDeleteArticle = () => {
-    const updatedPosts = blogPosts.filter(p => p.id !== currentArticle.id);
-    savePostsToStorage(updatedPosts);
+    deletePost(currentArticle.id);
     setIsDeleteConfirmOpen(false);
     setCurrentArticle(null);
     toast({ title: "Artikel berhasil dihapus." });
@@ -138,14 +83,10 @@ const Blog = () => {
     { id: 'tips', name: 'Tips & Tricks', icon: Lightbulb }
   ];
 
-  const filteredPosts = blogPosts.filter(post =>
-    post.published && // Hanya tampilkan yang sudah dipublish
+  const filteredPosts = publishedPosts.filter(post =>
     (post.title.toLowerCase().includes(searchTerm.toLowerCase()) || post.excerpt.toLowerCase().includes(searchTerm.toLowerCase())) &&
     (selectedCategory === 'all' || post.category === selectedCategory)
   );
-
-  const featuredPosts = blogPosts.filter(post => post.featured && post.published).slice(0, 2);
-  const recentPosts = blogPosts.filter(post => post.published).slice(0, 5);
 
   return (
     <>
@@ -155,7 +96,7 @@ const Blog = () => {
       </Helmet>
 
       {/* Login Dialog - Only shown when triggered */}
-      <LoginDialog isOpen={isLoginOpen} onOpenChange={setIsLoginOpen} onLogin={handleLogin} />
+      <LoginDialog isOpen={isLoginOpen} onOpenChange={setIsLoginOpen} onLogin={login} />
       
       {/* CMS Editor - Only shown after login and when editing */}
       {isAdmin && isEditorOpen && (
@@ -191,10 +132,10 @@ const Blog = () => {
                 <LayoutDashboard className="h-4 w-4 mr-2" />
                 CMS Dashboard
               </Button>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 size="sm"
-                onClick={handleLogout} 
+                onClick={handleLogout}
                 className="glass-effect border-red-500/50 text-red-400 hover:bg-red-600/20"
               >
                 <LogOut className="h-4 w-4 mr-2" />

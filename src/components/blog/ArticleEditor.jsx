@@ -19,6 +19,7 @@ const ArticleEditor = ({ isOpen, setIsOpen, article, onSave }) => {
   const [tags, setTags] = useState('');
   const [author, setAuthor] = useState('Caniel Agency');
   const [featured, setFeatured] = useState(false);
+  const [published, setPublished] = useState(false);
   const [activeField, setActiveField] = useState('title');
   const { toast } = useToast();
 
@@ -39,6 +40,7 @@ const ArticleEditor = ({ isOpen, setIsOpen, article, onSave }) => {
       setTags(article.tags?.join(', ') || '');
       setAuthor(article.author || 'Caniel Agency');
       setFeatured(article.featured || false);
+      setPublished(article.published !== undefined ? article.published : false);
     } else {
       const today = new Date().toISOString().split('T')[0];
       setTitle('');
@@ -50,6 +52,7 @@ const ArticleEditor = ({ isOpen, setIsOpen, article, onSave }) => {
       setTags('');
       setAuthor('Caniel Agency');
       setFeatured(false);
+      setPublished(false);
     }
   }, [article]);
 
@@ -83,6 +86,7 @@ const ArticleEditor = ({ isOpen, setIsOpen, article, onSave }) => {
       author,
       readTime: `${Math.max(1, Math.ceil(content.split(' ').length / 200))} menit`,
       featured,
+      published,
     };
 
     onSave(savedArticle);
@@ -98,6 +102,7 @@ const ArticleEditor = ({ isOpen, setIsOpen, article, onSave }) => {
     { id: 'tags', label: 'Tags', icon: Hash },
     { id: 'author', label: 'Author', icon: FileText },
     { id: 'featured', label: 'Featured', icon: Star },
+    { id: 'published', label: 'Published', icon: Eye },
   ];
 
   const categories = [
@@ -333,6 +338,26 @@ const ArticleEditor = ({ isOpen, setIsOpen, article, onSave }) => {
                 <span
                   className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
                     featured ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+            </div>
+
+            {/* Published Toggle */}
+            <div className="flex items-center justify-between p-3 bg-gray-800/30 rounded-lg">
+              <div className="flex items-center gap-2">
+                <Eye size={16} className={published ? "text-green-500" : "text-gray-500"} />
+                <Label className="text-sm font-medium text-gray-300">Published</Label>
+              </div>
+              <button
+                onClick={() => setPublished(!published)}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                  published ? 'bg-green-600' : 'bg-gray-700'
+                }`}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                    published ? 'translate-x-6' : 'translate-x-1'
                   }`}
                 />
               </button>

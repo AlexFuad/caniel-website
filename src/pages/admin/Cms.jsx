@@ -8,12 +8,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import { format } from 'date-fns';
+import { useAuth } from '@/context/AuthContext';
+import { useBlog } from '@/context/BlogContext';
 import ArticleEditor from '@/components/blog/ArticleEditor';
 import DeleteConfirmation from '@/components/blog/DeleteConfirmation';
 
 const Cms = () => {
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [blogPosts, setBlogPosts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
@@ -21,58 +21,49 @@ const Cms = () => {
   const [showDashboard, setShowDashboard] = useState(true);
   const [selectedCollection, setSelectedCollection] = useState('blog');
 
+  const { isAdmin, logout } = useAuth();
+  const { posts, isInitialized, savePost, deletePost } = useBlog();
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
-    const adminStatus = localStorage.getItem('isAdmin') === 'true';
-    setIsAdmin(adminStatus);
-    if (!adminStatus) {
+    if (!isAdmin) {
       toast({
         title: "Akses Ditolak",
         description: "Anda harus login sebagai admin untuk mengakses halaman ini.",
         variant: "destructive",
       });
       navigate('/blog');
-    } else {
-      loadBlogPosts();
     }
-  }, [navigate, toast]);
+  }, [isAdmin, navigate, toast]);
 
-  const loadBlogPosts = () => {
-    const storedPosts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
-    setBlogPosts(storedPosts);
+  const handleLogout = () => {
+    logout();
+    toast({
+      title: "Logout Berhasil",
+      description: "Anda telah keluar dari CMS Admin.",
+    });
+    navigate('/blog');
   };
 
   // Calculate dashboard statistics
   const stats = {
-    totalPosts: blogPosts.length,
-    thisMonth: blogPosts.filter(p => {
+    totalPosts: posts.length,
+    thisMonth: posts.filter(p => {
       const postDate = new Date(p.createdAt || p.date);
       const now = new Date();
       return postDate.getMonth() === now.getMonth() && postDate.getFullYear() === now.getFullYear();
     }).length,
-    featuredPosts: blogPosts.filter(p => p.featured).length,
-    totalViews: blogPosts.length * 150 // Simulated views
+    featuredPosts: posts.filter(p => p.featured).length,
+    totalViews: posts.length * 150 // Simulated views
   };
 
-  const recentPosts = [...blogPosts].sort((a, b) => 
+  const recentPosts = [...posts].sort((a, b) =>
     new Date(b.updatedAt || b.date) - new Date(a.updatedAt || a.date)
   ).slice(0, 5);
   
   const handleSaveArticle = (article) => {
-    let updatedPosts;
-    const existingPost = blogPosts.find(p => p.id === article.id);
-
-    if (existingPost) {
-        updatedPosts = blogPosts.map(p => p.id === article.id ? { ...article, updatedAt: new Date().toISOString() } : p);
-    } else {
-        const newPost = { ...article, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
-        updatedPosts = [newPost, ...blogPosts];
-    }
-
-    localStorage.setItem('blogPosts', JSON.stringify(updatedPosts));
-    setBlogPosts(updatedPosts);
+    savePost(article);
     setIsEditing(false);
     setCurrentArticle(null);
     toast({
@@ -80,11 +71,9 @@ const Cms = () => {
       description: "Perubahan Anda telah disimpan.",
     });
   };
-  
+
   const handleDeleteArticle = () => {
-    const updatedPosts = blogPosts.filter(p => p.id !== currentArticle.id);
-    localStorage.setItem('blogPosts', JSON.stringify(updatedPosts));
-    setBlogPosts(updatedPosts);
+    deletePost(currentArticle.id);
     setIsDeleteConfirmOpen(false);
     setCurrentArticle(null);
     toast({ title: "Artikel berhasil dihapus." });
@@ -107,7 +96,7 @@ const Cms = () => {
     });
   };
 
-  const filteredPosts = blogPosts.filter(post => 
+  const filteredPosts = posts.filter(post =>
     post.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -164,7 +153,7 @@ const Cms = () => {
                     <Database size={16} />
                     <span>Blog</span>
                   </div>
-                  <span className="text-xs bg-gray-600 px-1.5 py-0.5 rounded-full">{blogPosts.length}</span>
+                  <span className="text-xs bg-gray-600 px-1.5 py-0.5 rounded-full">{posts.length}</span>
                 </a>
                 <a href="#" onClick={() => handleAction('Services Collection')} className="flex items-center justify-between text-gray-400 hover:bg-gray-700/50 hover:text-white rounded px-3 py-2">
                   <div className="flex items-center gap-2">
