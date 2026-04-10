@@ -18,7 +18,8 @@
       "Bash(start *)",
       "Bash(tasklist)",
       "Bash(dir *)",
-      "Bash(npx *)"
+      "Bash(npx *)",
+      "WebFetch(caniel.my.id)"
     ]
   },
   "$version": 3
