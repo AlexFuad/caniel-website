@@ -21,29 +21,40 @@ const Cms = () => {
   const [showDashboard, setShowDashboard] = useState(true);
   const [selectedCollection, setSelectedCollection] = useState('blog');
 
-  const { isAdmin, logout } = useAuth();
+  const { logout, hasRole, user, isLoading: authLoading } = useAuth();
   const { posts, isInitialized, savePost, deletePost } = useBlog();
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const isAdmin = hasRole('admin');
+
+  // Redirect to login if not admin
   useEffect(() => {
-    if (!isAdmin) {
-      toast({
-        title: "Akses Ditolak",
-        description: "Anda harus login sebagai admin untuk mengakses halaman ini.",
-        variant: "destructive",
-      });
-      navigate('/blog');
+    if (!authLoading && !isAdmin) {
+      navigate('/admin/login', { replace: true });
     }
-  }, [isAdmin, navigate, toast]);
+  }, [authLoading, isAdmin, navigate]);
+
+  // Show loading while auth is being initialized
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#1A1A1A]">
+        <div className="text-white text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p>Memeriksa autentikasi...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render if not admin
+  if (!isAdmin) {
+    return null;
+  }
 
   const handleLogout = () => {
     logout();
-    toast({
-      title: "Logout Berhasil",
-      description: "Anda telah keluar dari CMS Admin.",
-    });
-    navigate('/blog');
+    navigate('/admin/login', { replace: true });
   };
 
   // Calculate dashboard statistics
@@ -104,8 +115,8 @@ const Cms = () => {
     return date && !isNaN(new Date(date));
   };
 
-  if (!isAdmin) {
-    return null; 
+  if (!hasRole('admin')) {
+    return null;
   }
 
   return (

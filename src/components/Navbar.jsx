@@ -11,10 +11,12 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const { isAdmin, logout, login } = useAuth();
+  const { user, logout, login, hasRole } = useAuth();
   const { toast } = useToast();
   const location = useLocation();
   const navigate = useNavigate();
+
+  const isAdmin = hasRole('admin');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -68,27 +70,33 @@ const Navbar = () => {
                 {item.name}
               </Link>)}
             
-            {/* CMS Login Button */}
-            <Button
-              onClick={() => isAdmin ? handleLogout() : setIsLoginOpen(true)}
-              className={`flex items-center gap-2 h-9 px-4 ${
-                isAdmin
-                  ? 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800'
-                  : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
-              }`}
-            >
-              {isAdmin ? (
-                <>
+            {/* CMS Admin Buttons */}
+            {isAdmin ? (
+              <>
+                <Button
+                  onClick={() => navigate('/admin/cms')}
+                  className="flex items-center gap-2 h-9 px-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 mr-2"
+                >
+                  <Shield className="h-4 w-4" />
+                  <span>CMS</span>
+                </Button>
+                <Button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 h-9 px-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
+                >
                   <X className="h-4 w-4" />
                   <span>Logout</span>
-                </>
-              ) : (
-                <>
-                  <Lock className="h-4 w-4" />
-                  <span>Login</span>
-                </>
-              )}
-            </Button>
+                </Button>
+              </>
+            ) : (
+              <Button
+                onClick={() => setIsLoginOpen(true)}
+                className="flex items-center gap-2 h-9 px-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+              >
+                <Lock className="h-4 w-4" />
+                <span>Login</span>
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -116,33 +124,43 @@ const Navbar = () => {
               {navItems.map(item => <Link key={item.path} to={item.path} onClick={() => setIsOpen(false)} className={`block py-2 text-sm font-medium transition-colors ${location.pathname === item.path ? 'text-blue-400' : 'text-gray-300 hover:text-white'}`}>
                   {item.name}
                 </Link>)}
-              <Button
-                onClick={() => {
-                  setIsOpen(false);
-                  if (isAdmin) {
-                    handleLogout();
-                  } else {
-                    setIsLoginOpen(true);
-                  }
-                }}
-                className={`w-full flex items-center justify-center gap-2 mt-4 ${
-                  isAdmin
-                    ? 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800'
-                    : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
-                }`}
-              >
-                {isAdmin ? (
-                  <>
+              
+              {/* CMS Admin Buttons - Mobile */}
+              {isAdmin ? (
+                <>
+                  <Button
+                    onClick={() => {
+                      setIsOpen(false);
+                      navigate('/admin/cms');
+                    }}
+                    className="w-full flex items-center justify-center gap-2 mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                  >
+                    <Shield className="h-4 w-4" />
+                    <span>Buka CMS</span>
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setIsOpen(false);
+                      handleLogout();
+                    }}
+                    className="w-full flex items-center justify-center gap-2 mt-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
+                  >
                     <X className="h-4 w-4" />
                     <span>Logout</span>
-                  </>
-                ) : (
-                  <>
-                    <Lock className="h-4 w-4" />
-                    <span>Login CMS</span>
-                  </>
-                )}
-              </Button>
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  onClick={() => {
+                    setIsOpen(false);
+                    setIsLoginOpen(true);
+                  }}
+                  className="w-full flex items-center justify-center gap-2 mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                >
+                  <Lock className="h-4 w-4" />
+                  <span>Login CMS</span>
+                </Button>
+              )}
             </div>
           </motion.div>}
       </AnimatePresence>
