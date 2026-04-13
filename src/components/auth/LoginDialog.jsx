@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Dialog,
   DialogContent,
@@ -23,6 +24,7 @@ const LoginDialog = ({ isOpen, onOpenChange, onLogin }) => {
   const [recaptchaToken, setRecaptchaToken] = useState(null);
   const [isRecaptchaVerified, setIsRecaptchaVerified] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -84,6 +86,8 @@ const LoginDialog = ({ isOpen, onOpenChange, onLogin }) => {
           title: "Login Berhasil!",
           description: "Selamat datang di CMS Admin!",
         });
+        // Redirect to CMS Dashboard
+        navigate('/admin/cms', { replace: true });
       } else {
         setIsRecaptchaVerified(false);
         setRecaptchaToken(null);

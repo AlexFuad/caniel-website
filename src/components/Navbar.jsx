@@ -72,22 +72,13 @@ const Navbar = () => {
             
             {/* CMS Admin Buttons */}
             {isAdmin ? (
-              <>
-                <Button
-                  onClick={() => navigate('/admin/cms')}
-                  className="flex items-center gap-2 h-9 px-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 mr-2"
-                >
-                  <Shield className="h-4 w-4" />
-                  <span>CMS</span>
-                </Button>
-                <Button
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 h-9 px-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
-                >
-                  <X className="h-4 w-4" />
-                  <span>Logout</span>
-                </Button>
-              </>
+              <Button
+                onClick={handleLogout}
+                className="flex items-center gap-2 h-9 px-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
+              >
+                <X className="h-4 w-4" />
+                <span>Logout</span>
+              </Button>
             ) : (
               <Button
                 onClick={() => setIsLoginOpen(true)}
@@ -127,28 +118,16 @@ const Navbar = () => {
               
               {/* CMS Admin Buttons - Mobile */}
               {isAdmin ? (
-                <>
-                  <Button
-                    onClick={() => {
-                      setIsOpen(false);
-                      navigate('/admin/cms');
-                    }}
-                    className="w-full flex items-center justify-center gap-2 mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                  >
-                    <Shield className="h-4 w-4" />
-                    <span>Buka CMS</span>
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setIsOpen(false);
-                      handleLogout();
-                    }}
-                    className="w-full flex items-center justify-center gap-2 mt-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
-                  >
-                    <X className="h-4 w-4" />
-                    <span>Logout</span>
-                  </Button>
-                </>
+                <Button
+                  onClick={() => {
+                    setIsOpen(false);
+                    handleLogout();
+                  }}
+                  className="w-full flex items-center justify-center gap-2 mt-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
+                >
+                  <X className="h-4 w-4" />
+                  <span>Logout</span>
+                </Button>
               ) : (
                 <Button
                   onClick={() => {

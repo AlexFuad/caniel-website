@@ -39,11 +39,11 @@ export function Sidebar({ isOpen, onToggle, mobileIsOpen, onMobileClose }) {
       id: 'blog',
       label: 'Blog',
       icon: FileText,
-      path: '/admin/blog',
+      path: '/admin/cms',
       permission: null,
       submenu: [
-        { label: 'Semua Artikel', path: '/admin/blog' },
-        { label: 'Tambah Baru', path: '/admin/blog/new' },
+        { label: 'Semua Artikel', path: '/admin/cms' },
+        { label: 'Tambah Baru', path: '/admin/cms' },
       ],
     },
     {

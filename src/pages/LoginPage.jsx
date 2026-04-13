@@ -39,7 +39,7 @@ export default function LoginPage() {
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/admin/dashboard', { replace: true });
+      navigate('/admin/cms', { replace: true });
     }
   }, [isAuthenticated, navigate]);
 

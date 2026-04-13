@@ -149,12 +149,12 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-xl font-bold mb-2">Kelola Konten Blog?</h3>
-              <p className="text-blue-100">Akses CMS untuk membuat dan mengelola artikel blog dengan mudah.</p>
+              <p className="text-blue-100">Akses management untuk membuat dan mengelola artikel blog dengan mudah.</p>
             </div>
             <Link to="/admin/cms">
               <Button className="bg-white text-blue-600 hover:bg-blue-50">
                 <FileText className="h-4 w-4 mr-2" />
-                Buka CMS
+                CMS Blog
               </Button>
             </Link>
           </div>
@@ -294,7 +294,7 @@ export default function DashboardPage() {
             <Link to="/admin/cms">
               <Button className="w-full justify-start bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                 <FileText className="h-4 w-4 mr-2" />
-                Buka CMS
+                CMS Blog
               </Button>
             </Link>
             <Link to="/admin/blog">
