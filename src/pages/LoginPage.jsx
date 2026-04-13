@@ -3,22 +3,25 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, Loader2, Lock, Mail } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Lock, Mail, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { loginSchema } from '@/lib/validators';
 import { useAuth } from '@/context/AuthContext';
 import { useNotification } from '@/context/NotificationContext';
+import Recaptcha from '@/components/auth/Recaptcha';
 
 /**
- * Login Page - Enhanced login with React Hook Form and Zod validation
+ * Login Page - Enhanced login with React Hook Form, Zod validation and reCAPTCHA
  */
 export default function LoginPage() {
   const navigate = useNavigate();
   const { login, isAuthenticated, isLoading: authLoading } = useAuth();
   const { showError } = useNotification();
   const [showPassword, setShowPassword] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState(null);
+  const [isRecaptchaVerified, setIsRecaptchaVerified] = useState(false);
 
   const {
     register,
@@ -41,13 +44,31 @@ export default function LoginPage() {
   }, [isAuthenticated, navigate]);
 
   const onSubmit = async (data) => {
-    const result = await login(data.email, data.password);
+    if (!isRecaptchaVerified) {
+      showError('Verifikasi Diperlukan', 'Silakan selesaikan verifikasi reCAPTCHA terlebih dahulu.');
+      return;
+    }
+
+    const result = await login(data.email, data.password, recaptchaToken);
 
     if (result.success) {
       // Login success - will redirect via useEffect
     } else {
+      // Reset reCAPTCHA on failed login
+      setIsRecaptchaVerified(false);
+      setRecaptchaToken(null);
       showError('Login Gagal', result.error || 'Email atau password salah');
     }
+  };
+
+  const handleRecaptchaVerify = (token) => {
+    setRecaptchaToken(token);
+    setIsRecaptchaVerified(true);
+  };
+
+  const handleRecaptchaExpire = () => {
+    setRecaptchaToken(null);
+    setIsRecaptchaVerified(false);
   };
 
   if (authLoading) {
@@ -180,11 +201,25 @@ export default function LoginPage() {
                 )}
               </div>
 
+              {/* reCAPTCHA */}
+              <div>
+                <Label className="flex items-center gap-2">
+                  <Shield className="h-4 w-4 text-gray-400" />
+                  <span>Keamanan</span>
+                </Label>
+                <div className="mt-2">
+                  <Recaptcha
+                    onVerify={handleRecaptchaVerify}
+                    onExpire={handleRecaptchaExpire}
+                  />
+                </div>
+              </div>
+
               {/* Submit Button */}
               <Button
                 type="submit"
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 h-12"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !isRecaptchaVerified}
               >
                 {isSubmitting ? (
                   <>
@@ -197,28 +232,8 @@ export default function LoginPage() {
               </Button>
             </form>
 
-            {/* Demo Credentials */}
-            <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-              <p className="text-sm font-medium text-blue-900 dark:text-blue-300 mb-2">
-                Demo Credentials:
-              </p>
-              <p className="text-xs text-blue-700 dark:text-blue-400">
-                Email: admin@caniel.my.id
-              </p>
-              <p className="text-xs text-blue-700 dark:text-blue-400">
-                Password: 4dL14@23#02
-              </p>
-            </div>
-
             {/* Quick Access Links */}
-            <div className="mt-4 flex gap-2">
-              <button
-                type="button"
-                onClick={() => navigate('/admin/cms')}
-                className="text-xs text-blue-600 hover:underline"
-              >
-                Akses CMS →
-              </button>
+            <div className="mt-6 flex gap-2">
               <button
                 type="button"
                 onClick={() => navigate('/')}

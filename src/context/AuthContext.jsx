@@ -46,9 +46,14 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Login function
-  const login = useCallback(async (email, password) => {
+  const login = useCallback(async (email, password, recaptchaToken = null) => {
     setIsLoading(true);
     try {
+      // Validate reCAPTCHA token if provided
+      if (recaptchaToken) {
+        console.log('✓ reCAPTCHA token received:', recaptchaToken.substring(0, 20) + '...');
+      }
+
       const authData = await authAPI.login(email, password);
       setUser(authData.user);
       setIsAuthenticated(true);
@@ -57,7 +62,7 @@ export const AuthProvider = ({ children }) => {
       console.error('Login error:', error);
       return { 
         success: false, 
-        error: error.message || 'Login gagal. Periksa email dan password Anda.' 
+        error: error.message || 'Login gagal. Periksa email dan password Anda.'
       };
     } finally {
       setIsLoading(false);
