@@ -352,8 +352,8 @@ const RichTextEditor = ({ value, onChange }) => {
         onInput={handleInput}
         onClick={() => updateHistoryState()}
         onKeyUp={() => updateHistoryState()}
-        className="prose prose-invert max-w-none p-4 min-h-[400px] text-gray-300 focus:outline-none"
-        style={{ 
+        className="prose prose-invert max-w-none p-4 min-h-[400px] text-gray-300 focus:outline-none editor-content"
+        style={{
           whiteSpace: 'pre-wrap',
           lineHeight: '1.6'
         }}
