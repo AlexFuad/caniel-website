@@ -144,6 +144,22 @@ export default function DashboardPage() {
   return (
     <MainLayout title="Dashboard" subtitle="Selamat datang di panel admin">
       <div className="space-y-6">
+        {/* CMS Quick Access Banner */}
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-6 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-xl font-bold mb-2">Kelola Konten Blog?</h3>
+              <p className="text-blue-100">Akses CMS untuk membuat dan mengelola artikel blog dengan mudah.</p>
+            </div>
+            <Link to="/admin/cms">
+              <Button className="bg-white text-blue-600 hover:bg-blue-50">
+                <FileText className="h-4 w-4 mr-2" />
+                Buka CMS
+              </Button>
+            </Link>
+          </div>
+        </div>
+
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
@@ -153,7 +169,7 @@ export default function DashboardPage() {
           trend="up"
           trendValue={12}
           color="blue"
-          link="/admin/blog"
+          link="/admin/cms"
         />
         <StatCard
           title="Total Produk"

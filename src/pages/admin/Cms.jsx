@@ -133,7 +133,7 @@ const Cms = () => {
           <aside className="w-64 bg-[#141414] p-4 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-8">
-                <button onClick={() => navigate('/blog')} className="p-1 rounded hover:bg-gray-700">
+                <button onClick={() => navigate('/admin/dashboard')} className="p-1 rounded hover:bg-gray-700" title="Kembali ke Dashboard">
                   <ChevronLeft size={20} />
                 </button>
                 <div className="flex items-center gap-2">
@@ -143,13 +143,23 @@ const Cms = () => {
                 <div/>
               </div>
 
-              <button 
+              <button
+                onClick={() => navigate('/admin/dashboard')}
+                className="w-full flex items-center justify-between mb-4 rounded px-3 py-2 transition-colors text-gray-400 hover:bg-gray-700/50 hover:text-white"
+              >
+                <div className="flex items-center gap-2">
+                  <BarChart size={16} />
+                  <span>Dashboard Admin</span>
+                </div>
+              </button>
+
+              <button
                 onClick={() => setShowDashboard(true)}
                 className={`w-full flex items-center justify-between mb-4 rounded px-3 py-2 transition-colors ${showDashboard ? 'bg-blue-600/30 text-blue-400 border border-blue-600/50' : 'text-gray-400 hover:bg-gray-700/50 hover:text-white'}`}
               >
                 <div className="flex items-center gap-2">
                   <BarChart size={16} />
-                  <span>Dashboard</span>
+                  <span>Dashboard CMS</span>
                 </div>
               </button>
 
@@ -179,7 +189,22 @@ const Cms = () => {
                 </button>
               </nav>
             </div>
-            <Button variant="outline" className="w-full border-gray-600 hover:bg-gray-700">Watch Tutorials</Button>
+            <div className="space-y-2">
+              <Button 
+                variant="outline" 
+                className="w-full border-gray-600 hover:bg-gray-700"
+                onClick={() => navigate('/admin/dashboard')}
+              >
+                <BarChart size={16} className="mr-2"/> Dashboard Admin
+              </Button>
+              <Button 
+                variant="outline" 
+                className="w-full border-red-600 text-red-400 hover:bg-red-600/20"
+                onClick={handleLogout}
+              >
+                <ChevronLeft size={16} className="mr-2"/> Logout
+              </Button>
+            </div>
           </aside>
         )}
 
@@ -196,10 +221,26 @@ const Cms = () => {
               {/* Dashboard Header */}
               <header className="flex items-center justify-between border-b border-gray-700 px-6 py-4 bg-[#141414]">
                 <div>
-                  <h1 className="text-2xl font-bold text-white">Dashboard</h1>
-                  <p className="text-sm text-gray-400 mt-1">Selamat datang di panel Admin CMS</p>
+                  <div className="flex items-center gap-3 mb-2">
+                    <button 
+                      onClick={() => navigate('/admin/dashboard')} 
+                      className="p-1.5 rounded hover:bg-gray-700 text-gray-400 hover:text-white transition-colors"
+                      title="Kembali ke Dashboard"
+                    >
+                      <ChevronLeft size={18} />
+                    </button>
+                    <h1 className="text-2xl font-bold text-white">Dashboard CMS</h1>
+                  </div>
+                  <p className="text-sm text-gray-400 mt-1">Selamat datang di panel Admin CMS - Kelola artikel blog</p>
                 </div>
                 <div className="flex items-center gap-3">
+                  <Button 
+                    onClick={() => navigate('/admin/dashboard')} 
+                    variant="outline"
+                    className="border-gray-600 hover:bg-gray-700"
+                  >
+                    <BarChart size={16} className="mr-2"/> Dashboard Admin
+                  </Button>
                   <Button onClick={() => openEditor(null)} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                     <Plus size={16} className="mr-2"/> Buat Artikel Baru
                   </Button>
