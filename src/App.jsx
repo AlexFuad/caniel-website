@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
 import { AuthProvider } from '@/context/AuthContext';
 import { ThemeProvider } from '@/context/ThemeContext';
+import { LanguageProvider } from '@/context/LanguageContext';
 import { NotificationProvider } from '@/context/NotificationContext';
 import { UserProvider } from '@/context/UserContext';
 import { ProductProvider } from '@/context/ProductContext';
@@ -12,6 +13,7 @@ import { BlogProvider } from '@/context/BlogContext';
 import ProtectedRoute from '@/components/layout/ProtectedRoute';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import WhatsAppButton from '@/components/WhatsAppButton';
 import Home from '@/pages/Home';
 import About from '@/pages/About';
 import Services from '@/pages/Services';
@@ -113,6 +115,7 @@ const Layout = () => {
         </Routes>
       </main>
       {!isAdminPage && <Footer />}
+      {!isAdminPage && <WhatsAppButton />}
       <Toaster />
     </div>
   );
@@ -124,17 +127,19 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <ThemeProvider>
-            <NotificationProvider>
-              <BlogProvider>
-                <UserProvider>
-                  <ProductProvider>
-                    <ServiceProvider>
-                      <Layout />
-                    </ServiceProvider>
-                  </ProductProvider>
-                </UserProvider>
-              </BlogProvider>
-            </NotificationProvider>
+            <LanguageProvider>
+              <NotificationProvider>
+                <BlogProvider>
+                  <UserProvider>
+                    <ProductProvider>
+                      <ServiceProvider>
+                        <Layout />
+                      </ServiceProvider>
+                    </ProductProvider>
+                  </UserProvider>
+                </BlogProvider>
+              </NotificationProvider>
+            </LanguageProvider>
           </ThemeProvider>
         </AuthProvider>
       </QueryClientProvider>

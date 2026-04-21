@@ -19,6 +19,7 @@ export const STORAGE_KEYS = {
   PRODUCTS: 'cms_products',
   SERVICES: 'cms_services',
   THEME: 'cms_theme',
+  LANGUAGE: 'cms_language',
   SETTINGS: 'cms_settings',
 };
 

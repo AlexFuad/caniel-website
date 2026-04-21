@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Lock, Shield } from 'lucide-react';
+import { Menu, X, Lock, Shield, Globe, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
+import { useTheme } from '@/context/ThemeContext';
+import { useLanguage } from '@/context/LanguageContext';
 import { useToast } from '@/components/ui/use-toast.js';
 import LoginDialog from '@/components/auth/LoginDialog.jsx';
 
@@ -12,6 +14,8 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const { user, logout, login, hasRole } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+  const { language, toggleLanguage, translate } = useLanguage();
   const { toast } = useToast();
   const location = useLocation();
   const navigate = useNavigate();
@@ -29,28 +33,28 @@ const Navbar = () => {
   const handleLogout = () => {
     logout();
     toast({
-      title: "Logout Berhasil",
-      description: "Anda telah keluar dari CMS Admin.",
+      title: translate('logout.success'),
+      description: language === 'id' ? "Anda telah keluar dari CMS Admin." : "You have logged out from CMS Admin.",
     });
   };
 
   const navItems = [{
-    name: 'Beranda',
+    name: translate('nav.home'),
     path: '/'
   }, {
-    name: 'Tentang Kami',
+    name: translate('nav.about'),
     path: '/about'
   }, {
-    name: 'Layanan',
+    name: translate('nav.services'),
     path: '/services'
   }, {
-    name: 'Portfolio',
+    name: translate('nav.portfolio'),
     path: '/portfolio'
   }, {
-    name: 'Blog',
+    name: translate('nav.blog'),
     path: '/blog'
   }, {
-    name: 'Kontak',
+    name: translate('nav.contact'),
     path: '/contact'
   }];
   return <motion.nav initial={{
@@ -70,6 +74,29 @@ const Navbar = () => {
                 {item.name}
               </Link>)}
             
+            {/* Theme Toggle Button */}
+            <Button
+              onClick={toggleTheme}
+              variant="ghost"
+              size="icon"
+              className="text-gray-300 hover:text-white transition-colors"
+              title={theme === 'dark' ? translate('nav.light_mode') : translate('nav.dark_mode')}
+            >
+              {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            </Button>
+
+            {/* Language Toggle Button */}
+            <Button
+              onClick={toggleLanguage}
+              variant="ghost"
+              size="icon"
+              className="text-gray-300 hover:text-white transition-colors"
+              title={translate('nav.translate')}
+            >
+              <Globe className="h-5 w-5" />
+              <span className="ml-1 text-xs font-semibold">{language === 'id' ? 'EN' : 'ID'}</span>
+            </Button>
+
             {/* CMS Admin Buttons */}
             {isAdmin ? (
               <Button
@@ -77,7 +104,7 @@ const Navbar = () => {
                 className="flex items-center gap-2 h-9 px-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
               >
                 <X className="h-4 w-4" />
-                <span>Logout</span>
+                <span>{translate('nav.logout')}</span>
               </Button>
             ) : (
               <Button
@@ -85,7 +112,7 @@ const Navbar = () => {
                 className="flex items-center gap-2 h-9 px-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
               >
                 <Lock className="h-4 w-4" />
-                <span>Login</span>
+                <span>{translate('nav.login')}</span>
               </Button>
             )}
           </div>
@@ -116,6 +143,32 @@ const Navbar = () => {
                   {item.name}
                 </Link>)}
               
+              {/* Theme Toggle - Mobile */}
+              <Button
+                onClick={() => {
+                  setIsOpen(false);
+                  toggleTheme();
+                }}
+                variant="ghost"
+                className="w-full flex items-center justify-center gap-2 py-2 text-gray-300 hover:text-white transition-colors"
+              >
+                {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                <span>{theme === 'dark' ? translate('nav.light_mode') : translate('nav.dark_mode')}</span>
+              </Button>
+
+              {/* Language Toggle - Mobile */}
+              <Button
+                onClick={() => {
+                  setIsOpen(false);
+                  toggleLanguage();
+                }}
+                variant="ghost"
+                className="w-full flex items-center justify-center gap-2 py-2 text-gray-300 hover:text-white transition-colors"
+              >
+                <Globe className="h-5 w-5" />
+                <span>{translate('nav.translate')} ({language === 'id' ? 'EN' : 'ID'})</span>
+              </Button>
+
               {/* CMS Admin Buttons - Mobile */}
               {isAdmin ? (
                 <Button
@@ -126,7 +179,7 @@ const Navbar = () => {
                   className="w-full flex items-center justify-center gap-2 mt-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
                 >
                   <X className="h-4 w-4" />
-                  <span>Logout</span>
+                  <span>{translate('nav.logout')}</span>
                 </Button>
               ) : (
                 <Button
@@ -137,7 +190,7 @@ const Navbar = () => {
                   className="w-full flex items-center justify-center gap-2 mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                 >
                   <Lock className="h-4 w-4" />
-                  <span>Login CMS</span>
+                  <span>{translate('nav.login_cms')}</span>
                 </Button>
               )}
             </div>
