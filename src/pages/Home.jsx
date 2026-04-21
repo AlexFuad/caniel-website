@@ -17,9 +17,11 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import { useLanguage } from '@/context/LanguageContext';
 
 const Home = () => {
   const { toast } = useToast();
+  const { translate } = useLanguage();
 
   const handleConsultation = () => {
     toast({
@@ -31,35 +33,55 @@ const Home = () => {
   const services = [
     {
       icon: Code,
-      title: 'Website Development',
-      description: 'Membangun website modern, responsif, dan SEO-friendly untuk bisnis Anda',
-      features: ['Responsive Design', 'SEO Optimized', 'Fast Loading', 'Modern UI/UX']
+      title: translate('service.web_dev.title'),
+      description: translate('service.web_dev.desc'),
+      features: [
+        translate('service.web_dev.feature1'), 
+        translate('service.web_dev.feature2'), 
+        translate('service.web_dev.feature3'), 
+        translate('service.web_dev.feature4')
+      ]
     },
     {
       icon: TrendingUp,
-      title: 'Digital Marketing',
-      description: 'Strategi pemasaran digital yang efektif untuk meningkatkan brand awareness',
-      features: ['Social Media Marketing', 'Google Ads', 'Content Marketing', 'Analytics']
+      title: translate('service.digital_marketing.title'),
+      description: translate('service.digital_marketing.desc'),
+      features: [
+        translate('service.digital_marketing.feature1'), 
+        translate('service.digital_marketing.feature2'), 
+        translate('service.digital_marketing.feature3'), 
+        translate('service.digital_marketing.feature4')
+      ]
     },
     {
       icon: Users,
-      title: 'Business Consulting',
-      description: 'Konsultasi bisnis profesional untuk mengoptimalkan operasional perusahaan',
-      features: ['Business Strategy', 'Process Optimization', 'Market Analysis', 'Growth Planning']
+      title: translate('service.business_consulting.title'),
+      description: translate('service.business_consulting.desc'),
+      features: [
+        translate('service.business_consulting.feature1'), 
+        translate('service.business_consulting.feature2'), 
+        translate('service.business_consulting.feature3'), 
+        translate('service.business_consulting.feature4')
+      ]
     },
     {
       icon: Settings,
-      title: 'Management System',
-      description: 'Sistem manajemen terintegrasi untuk efisiensi operasional bisnis',
-      features: ['CRM System', 'Inventory Management', 'HR Management', 'Financial Tracking']
+      title: translate('service.management_system.title'),
+      description: translate('service.management_system.desc'),
+      features: [
+        translate('service.management_system.feature1'), 
+        translate('service.management_system.feature2'), 
+        translate('service.management_system.feature3'), 
+        translate('service.management_system.feature4')
+      ]
     }
   ];
 
   const stats = [
-    { number: '500+', label: 'Proyek Selesai', icon: CheckCircle },
-    { number: '200+', label: 'Klien Puas', icon: Users },
-    { number: '5+', label: 'Tahun Pengalaman', icon: Star },
-    { number: '24/7', label: 'Support', icon: Zap }
+    { number: '500+', label: translate('stat.projects'), icon: CheckCircle },
+    { number: '200+', label: translate('stat.clients'), icon: Users },
+    { number: '5+', label: translate('stat.experience'), icon: Star },
+    { number: '24/7', label: translate('stat.support'), icon: Zap }
   ];
 
   const testimonials = [
@@ -115,13 +137,12 @@ const Home = () => {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6">
-              <span className="gradient-text">Solusi Teknologi</span>
+              <span className="gradient-text">{translate('home.hero.title').split(' ').slice(0, 2).join(' ')}</span>
               <br />
-              <span className="text-white">Terdepan untuk Bisnis</span>
+              <span className="text-white">{translate('home.hero.title').split(' ').slice(2).join(' ')}</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Kami menyediakan layanan website development, digital marketing, 
-              business consulting, dan management system untuk mengembangkan bisnis Anda
+              {translate('home.hero.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Button 
@@ -129,7 +150,7 @@ const Home = () => {
                 className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-lg px-8 py-4"
                 onClick={handleConsultation}
               >
-                Konsultasi Gratis
+                {translate('action.free_consultation')}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Link to="/portfolio">
@@ -138,7 +159,7 @@ const Home = () => {
                   size="lg" 
                   className="border-2 border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white text-lg px-8 py-4"
                 >
-                  Lihat Portfolio
+                  {translate('home.hero.cta_secondary')}
                 </Button>
               </Link>
             </div>
@@ -181,10 +202,10 @@ const Home = () => {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
-              <span className="gradient-text">Layanan Kami</span>
+              <span className="gradient-text">{translate('home.services.title')}</span>
             </h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Solusi lengkap untuk kebutuhan teknologi dan bisnis Anda
+              {translate('home.services.subtitle')}
             </p>
           </motion.div>
 
@@ -247,10 +268,10 @@ const Home = () => {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
-              <span className="gradient-text">Testimoni Klien</span>
+              <span className="gradient-text">{translate('home.testimonials.title')}</span>
             </h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Apa kata klien kami tentang layanan yang kami berikan
+              {translate('home.testimonials.subtitle')}
             </p>
           </motion.div>
 
@@ -291,10 +312,10 @@ const Home = () => {
             className="glass-effect rounded-3xl p-12 text-center"
           >
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
-              <span className="gradient-text">Siap Mengembangkan Bisnis?</span>
+              <span className="gradient-text">{translate('home.cta.title')}</span>
             </h2>
             <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-              Hubungi kami sekarang untuk konsultasi gratis dan dapatkan solusi terbaik untuk bisnis Anda
+              {translate('home.cta.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
@@ -302,7 +323,7 @@ const Home = () => {
                 className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-lg px-8 py-4"
                 onClick={handleConsultation}
               >
-                Konsultasi Gratis
+                {translate('action.free_consultation')}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Link to="/contact">
@@ -311,7 +332,7 @@ const Home = () => {
                   size="lg" 
                   className="border-2 border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white text-lg px-8 py-4"
                 >
-                  Hubungi Kami
+                  {translate('home.cta.contact')}
                 </Button>
               </Link>
             </div>

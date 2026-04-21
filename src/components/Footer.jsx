@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Code, Zap, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, ArrowUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/context/LanguageContext';
 const Footer = () => {
+  const { translate } = useLanguage();
+  
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -12,42 +15,42 @@ const Footer = () => {
   };
   const footerLinks = {
     layanan: [{
-      name: 'Website Development',
+      name: translate('footer.link.web_dev'),
       href: '/services'
     }, {
-      name: 'Digital Marketing',
+      name: translate('footer.link.digital_marketing'),
       href: '/services'
     }, {
-      name: 'Business Consulting',
+      name: translate('footer.link.business_consulting'),
       href: '/services'
     }, {
-      name: 'Management System',
+      name: translate('footer.link.management_system'),
       href: '/services'
     }],
     perusahaan: [{
-      name: 'Tentang Kami',
+      name: translate('footer.link.about'),
       href: '/about'
     }, {
-      name: 'Portfolio',
+      name: translate('footer.link.portfolio'),
       href: '/portfolio'
     }, {
-      name: 'Blog',
+      name: translate('footer.link.blog'),
       href: '/blog'
     }, {
-      name: 'Kontak',
+      name: translate('footer.link.contact'),
       href: '/contact'
     }],
     dukungan: [{
-      name: 'FAQ',
+      name: translate('footer.link.faq'),
       href: '#'
     }, {
-      name: 'Dokumentasi',
+      name: translate('footer.link.documentation'),
       href: '#'
     }, {
-      name: 'Support',
+      name: translate('footer.link.support'),
       href: '#'
     }, {
-      name: 'Privacy Policy',
+      name: translate('footer.link.privacy_policy'),
       href: '#'
     }]
   };
@@ -85,9 +88,7 @@ const Footer = () => {
                 <span className="text-xl font-bold gradient-text">Caniel Agency</span>
               </Link>
               <p className="text-gray-400 mb-6 leading-relaxed">
-                Solusi teknologi terdepan untuk mengembangkan bisnis Anda. 
-                Kami menyediakan layanan website development, digital marketing, 
-                dan konsultasi bisnis profesional.
+                {translate('footer.description')}
               </p>
               <div className="flex space-x-4">
                 {socialLinks.map((social, index) => <motion.a key={social.label} href={social.href} whileHover={{
@@ -103,7 +104,7 @@ const Footer = () => {
             {/* Services Links */}
             <div>
               <span className="text-lg font-semibold text-white mb-6 block">
-                Layanan
+                {translate('footer.services')}
               </span>
               <ul className="space-y-3">
                 {footerLinks.layanan.map(link => <li key={link.name}>
@@ -117,7 +118,7 @@ const Footer = () => {
             {/* Company Links */}
             <div>
               <span className="text-lg font-semibold text-white mb-6 block">
-                Perusahaan
+                {translate('footer.company')}
               </span>
               <ul className="space-y-3">
                 {footerLinks.perusahaan.map(link => <li key={link.name}>
@@ -131,24 +132,27 @@ const Footer = () => {
             {/* Contact Info */}
             <div>
               <span className="text-lg font-semibold text-white mb-6 block">
-                Kontak Kami
+                {translate('footer.contact')}
               </span>
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
                   <MapPin className="h-5 w-5 text-blue-500 mt-1 flex-shrink-0" />
                   <p className="text-gray-400">
-										The Family Residence
-										Jl. Pratama, Kav-101 Deplu Kreo, Cipadu Jaya, Larangan<br />
-                    Kota Tangerang, 15155
+                    {translate('footer.address').split('\n').map((line, index) => (
+                      <span key={index}>
+                        {line}
+                        {index < translate('footer.address').split('\n').length - 1 && <br />}
+                      </span>
+                    ))}
                   </p>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Phone className="h-5 w-5 text-blue-500 flex-shrink-0" />
-                  <p className="text-gray-400">+62 818 414 951</p>
+                  <p className="text-gray-400">{translate('footer.phone')}</p>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Mail className="h-5 w-5 text-blue-500 flex-shrink-0" />
-                  <p className="text-gray-400">marketing@caniel.my.id</p>
+                  <p className="text-gray-400">{translate('footer.email')}</p>
                 </div>
               </div>
             </div>
@@ -158,13 +162,13 @@ const Footer = () => {
         {/* Bottom Footer */}
         <div className="border-t border-slate-800 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm">© 2024 Caniel Agency. Semua hak dilindungi.</p>
+            <p className="text-gray-400 text-sm">{translate('footer.copyright')}</p>
             <div className="flex items-center space-x-6 mt-4 md:mt-0">
               <Link to="#" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">
-                Syarat & Ketentuan
+                {translate('footer.terms')}
               </Link>
               <Link to="#" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">
-                Kebijakan Privasi
+                {translate('footer.privacy')}
               </Link>
             </div>
           </div>

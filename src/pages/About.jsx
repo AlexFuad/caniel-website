@@ -11,63 +11,65 @@ import {
   Globe,
   Heart
 } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 const About = () => {
+  const { translate } = useLanguage();
   const values = [
     {
       icon: Target,
-      title: 'Fokus pada Hasil',
-      description: 'Kami berkomitmen memberikan solusi yang menghasilkan dampak nyata bagi bisnis klien'
+      title: translate('value.focus.title'),
+      description: translate('value.focus.desc')
     },
     {
       icon: Lightbulb,
-      title: 'Inovasi Berkelanjutan',
-      description: 'Selalu mengikuti perkembangan teknologi terbaru untuk memberikan solusi terdepan'
+      title: translate('value.innovation.title'),
+      description: translate('value.innovation.desc')
     },
     {
       icon: Heart,
-      title: 'Kepuasan Klien',
-      description: 'Kepuasan dan kesuksesan klien adalah prioritas utama dalam setiap proyek'
+      title: translate('value.satisfaction.title'),
+      description: translate('value.satisfaction.desc')
     },
     {
       icon: Globe,
-      title: 'Standar Global',
-      description: 'Menerapkan standar internasional dalam setiap layanan yang kami berikan'
+      title: translate('value.global.title'),
+      description: translate('value.global.desc')
     }
   ];
 
   const team = [
     {
-      name: 'Alex Fuad',
-      position: 'CEO & Founder',
-      description: 'Berpengalaman 8+ tahun dalam teknologi dan bisnis digital',
+      name: translate('team.ceo.name'),
+      position: translate('team.ceo.position'),
+      description: translate('team.ceo.desc'),
       image: 'Professional CEO in modern office setting'
     },
     {
-      name: 'Eca Tatianna',
-      position: 'Lead Developer',
-      description: 'Expert dalam web development dan system architecture',
+      name: translate('team.dev.name'),
+      position: translate('team.dev.position'),
+      description: translate('team.dev.desc'),
       image: 'Female software developer working on computer'
     },
     {
-      name: 'Daniel Rizky N',
-      position: 'Digital Marketing Manager',
-      description: 'Spesialis strategi pemasaran digital dan growth hacking',
+      name: translate('team.marketing.name'),
+      position: translate('team.marketing.position'),
+      description: translate('team.marketing.desc'),
       image: 'Marketing professional analyzing data charts'
     },
     {
-      name: 'Aprilianti P',
-      position: 'Business Consultant',
-      description: 'Konsultan bisnis dengan track record mengembangkan 100+ perusahaan',
+      name: translate('team.consultant.name'),
+      position: translate('team.consultant.position'),
+      description: translate('team.consultant.desc'),
       image: 'Business consultant in professional meeting'
     }
   ];
 
   const achievements = [
-    { number: '500+', label: 'Proyek Berhasil' },
-    { number: '200+', label: 'Klien Puas' },
-    { number: '5+', label: 'Tahun Pengalaman' },
-    { number: '50+', label: 'Award & Sertifikasi' }
+    { number: '500+', label: translate('achievement.projects') },
+    { number: '200+', label: translate('achievement.clients') },
+    { number: '5+', label: translate('achievement.experience') },
+    { number: '50+', label: translate('achievement.awards') }
   ];
 
   return (
@@ -90,11 +92,10 @@ const About = () => {
               className="text-center"
             >
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                <span className="gradient-text">Tentang Kami</span>
+                <span className="gradient-text">{translate('about.title')}</span>
               </h1>
               <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-                Tim profesional yang berdedikasi untuk mengembangkan bisnis Anda 
-                dengan solusi teknologi terdepan dan strategi yang terbukti efektif
+                {translate('about.subtitle')}
               </p>
             </motion.div>
           </div>
@@ -110,24 +111,17 @@ const About = () => {
                 transition={{ duration: 0.8 }}
               >
                 <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                  <span className="gradient-text">Cerita Kami</span>
+                  <span className="gradient-text">{translate('about.story.title')}</span>
                 </h2>
                 <div className="space-y-6 text-gray-300 leading-relaxed">
                   <p>
-                    Caniel Agency didirikan pada tahun 2019 dengan visi menjadi partner 
-                    teknologi terpercaya bagi bisnis di Indonesia. Berawal dari tim kecil 
-                    yang passionate terhadap teknologi, kami telah berkembang menjadi 
-                    perusahaan yang melayani ratusan klien.
+                    {translate('about.story.para1')}
                   </p>
                   <p>
-                    Dengan pengalaman lebih dari 5 tahun, kami telah membantu berbagai 
-                    jenis bisnis mulai dari startup hingga perusahaan besar untuk 
-                    bertransformasi digital dan mencapai target bisnis mereka.
+                    {translate('about.story.para2')}
                   </p>
                   <p>
-                    Komitmen kami adalah memberikan solusi teknologi yang tidak hanya 
-                    modern dan inovatif, tetapi juga praktis dan memberikan ROI yang 
-                    terukur bagi setiap klien.
+                    {translate('about.story.para3')}
                   </p>
                 </div>
               </motion.div>
@@ -158,10 +152,10 @@ const About = () => {
               className="text-center mb-16"
             >
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                <span className="gradient-text">Nilai-Nilai Kami</span>
+                <span className="gradient-text">{translate('about.values.title')}</span>
               </h2>
               <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Prinsip-prinsip yang menjadi fondasi dalam setiap layanan yang kami berikan
+                {translate('about.values.subtitle')}
               </p>
             </motion.div>
 
@@ -195,10 +189,10 @@ const About = () => {
               className="text-center mb-16"
             >
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                <span className="gradient-text">Tim Profesional</span>
+                <span className="gradient-text">{translate('about.team.title')}</span>
               </h2>
               <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Bertemu dengan tim ahli yang siap membantu mengembangkan bisnis Anda
+                {translate('about.team.subtitle')}
               </p>
             </motion.div>
 
@@ -236,10 +230,10 @@ const About = () => {
               className="text-center mb-16"
             >
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                <span className="gradient-text">Pencapaian Kami</span>
+                <span className="gradient-text">{translate('about.achievements.title')}</span>
               </h2>
               <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Angka-angka yang menunjukkan dedikasi dan kualitas layanan kami
+                {translate('about.achievements.subtitle')}
               </p>
             </motion.div>
 
@@ -274,12 +268,10 @@ const About = () => {
               >
                 <div className="flex items-center mb-6">
                   <Target className="h-12 w-12 text-blue-500 mr-4" />
-                  <h3 className="text-2xl font-bold text-white">Misi Kami</h3>
+                  <h3 className="text-2xl font-bold text-white">{translate('about.mission.title')}</h3>
                 </div>
                 <p className="text-gray-300 leading-relaxed">
-                  Memberikan solusi teknologi terbaik yang membantu bisnis bertransformasi 
-                  digital, meningkatkan efisiensi operasional, dan mencapai pertumbuhan 
-                  yang berkelanjutan melalui inovasi dan layanan berkualitas tinggi.
+                  {translate('about.mission.content')}
                 </p>
               </motion.div>
 
@@ -291,12 +283,10 @@ const About = () => {
               >
                 <div className="flex items-center mb-6">
                   <Award className="h-12 w-12 text-purple-500 mr-4" />
-                  <h3 className="text-2xl font-bold text-white">Visi Kami</h3>
+                  <h3 className="text-2xl font-bold text-white">{translate('about.vision.title')}</h3>
                 </div>
                 <p className="text-gray-300 leading-relaxed">
-                  Menjadi partner teknologi terpercaya dan terdepan di Indonesia yang 
-                  membantu ribuan bisnis mencapai kesuksesan melalui transformasi digital 
-                  dan strategi bisnis yang inovatif.
+                  {translate('about.vision.content')}
                 </p>
               </motion.div>
             </div>

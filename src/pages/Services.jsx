@@ -19,9 +19,11 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import { useLanguage } from '@/context/LanguageContext';
 
 const Services = () => {
   const { toast } = useToast();
+  const { translate } = useLanguage();
 
   const handleGetQuote = () => {
     toast({
@@ -33,122 +35,122 @@ const Services = () => {
   const services = [
     {
       icon: Code,
-      title: 'Website Development',
-      description: 'Membangun website modern, responsif, dan SEO-friendly yang memberikan pengalaman terbaik bagi pengunjung dan meningkatkan konversi bisnis Anda.',
+      title: translate('services.web_dev.title'),
+      description: translate('services.web_dev.desc'),
       features: [
-        'Responsive Web Design',
-        'SEO Optimization',
-        'Fast Loading Speed',
-        'Modern UI/UX Design',
-        'Cross-browser Compatibility',
-        'Mobile-first Approach',
-        'Content Management System',
-        'E-commerce Integration'
+        translate('services.web_dev.feature1'),
+        translate('services.web_dev.feature2'),
+        translate('services.web_dev.feature3'),
+        translate('services.web_dev.feature4'),
+        translate('services.web_dev.feature5'),
+        translate('services.web_dev.feature6'),
+        translate('services.web_dev.feature7'),
+        translate('services.web_dev.feature8')
       ],
       technologies: ['React', 'Next.js', 'WordPress', 'Laravel', 'Node.js'],
-      startingPrice: 'Mulai dari Rp 5.000.000'
+      startingPrice: translate('services.web_dev.price')
     },
     {
       icon: TrendingUp,
-      title: 'Digital Marketing',
-      description: 'Strategi pemasaran digital yang komprehensif untuk meningkatkan brand awareness, traffic website, dan penjualan online Anda.',
+      title: translate('services.digital_marketing.title'),
+      description: translate('services.digital_marketing.desc'),
       features: [
-        'Social Media Marketing',
-        'Google Ads Management',
-        'SEO & Content Marketing',
-        'Email Marketing',
-        'Influencer Marketing',
-        'Analytics & Reporting',
-        'Conversion Optimization',
-        'Brand Strategy'
+        translate('services.digital_marketing.feature1'),
+        translate('services.digital_marketing.feature2'),
+        translate('services.digital_marketing.feature3'),
+        translate('services.digital_marketing.feature4'),
+        translate('services.digital_marketing.feature5'),
+        translate('services.digital_marketing.feature6'),
+        translate('services.digital_marketing.feature7'),
+        translate('services.digital_marketing.feature8')
       ],
       technologies: ['Google Analytics', 'Facebook Ads', 'Google Ads', 'SEMrush', 'Mailchimp'],
-      startingPrice: 'Mulai dari Rp 3.000.000/bulan'
+      startingPrice: translate('services.digital_marketing.price')
     },
     {
       icon: Users,
-      title: 'Business Consulting',
-      description: 'Konsultasi bisnis profesional untuk mengoptimalkan operasional, strategi pertumbuhan, dan transformasi digital perusahaan Anda.',
+      title: translate('services.business_consulting.title'),
+      description: translate('services.business_consulting.desc'),
       features: [
-        'Business Strategy Planning',
-        'Process Optimization',
-        'Market Analysis',
-        'Digital Transformation',
-        'Performance Improvement',
-        'Risk Management',
-        'Growth Planning',
-        'Change Management'
+        translate('services.business_consulting.feature1'),
+        translate('services.business_consulting.feature2'),
+        translate('services.business_consulting.feature3'),
+        translate('services.business_consulting.feature4'),
+        translate('services.business_consulting.feature5'),
+        translate('services.business_consulting.feature6'),
+        translate('services.business_consulting.feature7'),
+        translate('services.business_consulting.feature8')
       ],
       technologies: ['Business Intelligence', 'Data Analytics', 'Project Management', 'CRM'],
-      startingPrice: 'Mulai dari Rp 2.000.000/sesi'
+      startingPrice: translate('services.business_consulting.price')
     },
     {
       icon: Settings,
-      title: 'Management System',
-      description: 'Sistem manajemen terintegrasi yang dirancang khusus untuk meningkatkan efisiensi operasional dan produktivitas bisnis Anda.',
+      title: translate('services.management_system.title'),
+      description: translate('services.management_system.desc'),
       features: [
-        'Customer Relationship Management',
-        'Inventory Management',
-        'Human Resource Management',
-        'Financial Management',
-        'Project Management',
-        'Document Management',
-        'Reporting & Analytics',
-        'Mobile Access'
+        translate('services.management_system.feature1'),
+        translate('services.management_system.feature2'),
+        translate('services.management_system.feature3'),
+        translate('services.management_system.feature4'),
+        translate('services.management_system.feature5'),
+        translate('services.management_system.feature6'),
+        translate('services.management_system.feature7'),
+        translate('services.management_system.feature8')
       ],
       technologies: ['Custom Development', 'Cloud Integration', 'API Development', 'Database Design'],
-      startingPrice: 'Mulai dari Rp 15.000.000'
+      startingPrice: translate('services.management_system.price')
     }
   ];
 
   const additionalServices = [
     {
       icon: Globe,
-      title: 'Domain & Hosting',
-      description: 'Layanan domain dan hosting berkualitas tinggi dengan uptime 99.9%'
+      title: translate('services.domain.title'),
+      description: translate('services.domain.desc')
     },
     {
       icon: Shield,
-      title: 'Website Security',
-      description: 'Perlindungan website dari malware, hacking, dan ancaman keamanan'
+      title: translate('services.security.title'),
+      description: translate('services.security.desc')
     },
     {
       icon: Database,
-      title: 'Data Migration',
-      description: 'Migrasi data yang aman dari sistem lama ke sistem baru'
+      title: translate('services.migration.title'),
+      description: translate('services.migration.desc')
     },
     {
       icon: Zap,
-      title: 'Performance Optimization',
-      description: 'Optimasi performa website untuk kecepatan loading maksimal'
+      title: translate('services.optimization.title'),
+      description: translate('services.optimization.desc')
     }
   ];
 
   const process = [
     {
       step: '01',
-      title: 'Konsultasi & Analisis',
-      description: 'Memahami kebutuhan bisnis dan menganalisis requirements'
+      title: translate('process.step1.title'),
+      description: translate('process.step1.desc')
     },
     {
       step: '02',
-      title: 'Perencanaan & Strategi',
-      description: 'Menyusun strategi dan timeline proyek yang detail'
+      title: translate('process.step2.title'),
+      description: translate('process.step2.desc')
     },
     {
       step: '03',
-      title: 'Development & Implementation',
-      description: 'Mengembangkan solusi sesuai dengan rencana yang telah dibuat'
+      title: translate('process.step3.title'),
+      description: translate('process.step3.desc')
     },
     {
       step: '04',
-      title: 'Testing & Quality Assurance',
-      description: 'Melakukan testing menyeluruh untuk memastikan kualitas'
+      title: translate('process.step4.title'),
+      description: translate('process.step4.desc')
     },
     {
       step: '05',
-      title: 'Launch & Support',
-      description: 'Meluncurkan proyek dan memberikan support berkelanjutan'
+      title: translate('process.step5.title'),
+      description: translate('process.step5.desc')
     }
   ];
 
@@ -172,11 +174,10 @@ const Services = () => {
               className="text-center"
             >
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                <span className="gradient-text">Layanan Kami</span>
+                <span className="gradient-text">{translate('services.hero.title')}</span>
               </h1>
               <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-                Solusi teknologi lengkap untuk mengembangkan bisnis Anda dengan 
-                layanan profesional dan harga yang kompetitif
+                {translate('services.hero.subtitle')}
               </p>
             </motion.div>
           </div>
@@ -211,7 +212,7 @@ const Services = () => {
                     </p>
 
                     <div className="mb-8">
-                      <h3 className="text-xl font-semibold text-white mb-4">Fitur Utama:</h3>
+                      <h3 className="text-xl font-semibold text-white mb-4">{translate('services.web_dev.features')}</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         {service.features.map((feature) => (
                           <div key={feature} className="flex items-center">
@@ -223,7 +224,7 @@ const Services = () => {
                     </div>
 
                     <div className="mb-8">
-                      <h3 className="text-xl font-semibold text-white mb-4">Teknologi:</h3>
+                      <h3 className="text-xl font-semibold text-white mb-4">{translate('services.web_dev.technologies')}</h3>
                       <div className="flex flex-wrap gap-2">
                         {service.technologies.map((tech) => (
                           <span
@@ -246,7 +247,7 @@ const Services = () => {
                         className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                         onClick={handleGetQuote}
                       >
-                        Dapatkan Penawaran
+                        {translate('action.get_quote')}
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
@@ -276,10 +277,10 @@ const Services = () => {
               className="text-center mb-16"
             >
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                <span className="gradient-text">Layanan Tambahan</span>
+                <span className="gradient-text">{translate('services.additional.title')}</span>
               </h2>
               <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Layanan pendukung untuk melengkapi kebutuhan teknologi bisnis Anda
+                {translate('services.additional.subtitle')}
               </p>
             </motion.div>
 
@@ -313,10 +314,10 @@ const Services = () => {
               className="text-center mb-16"
             >
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                <span className="gradient-text">Proses Kerja Kami</span>
+                <span className="gradient-text">{translate('services.process.title')}</span>
               </h2>
               <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Metodologi yang terbukti untuk menghasilkan solusi berkualitas tinggi
+                {translate('services.process.subtitle')}
               </p>
             </motion.div>
 
@@ -354,11 +355,10 @@ const Services = () => {
               className="glass-effect rounded-3xl p-12 text-center"
             >
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                <span className="gradient-text">Siap Memulai Proyek?</span>
+                <span className="gradient-text">{translate('services.cta.title')}</span>
               </h2>
               <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-                Konsultasikan kebutuhan bisnis Anda dengan tim ahli kami dan dapatkan 
-                solusi terbaik yang sesuai dengan budget dan timeline Anda
+                {translate('services.cta.subtitle')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
@@ -366,7 +366,7 @@ const Services = () => {
                   className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-lg px-8 py-4"
                   onClick={handleGetQuote}
                 >
-                  Konsultasi Gratis
+                  {translate('action.free_consultation')}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button 
@@ -375,7 +375,7 @@ const Services = () => {
                   className="border-2 border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white text-lg px-8 py-4"
                   onClick={handleGetQuote}
                 >
-                  Dapatkan Penawaran
+                  {translate('services.cta.quote')}
                 </Button>
               </div>
             </motion.div>
