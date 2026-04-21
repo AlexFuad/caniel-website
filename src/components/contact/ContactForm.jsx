@@ -7,17 +7,20 @@ import {
   Calendar
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/context/LanguageContext';
 
 const ContactForm = ({ formData, handleInputChange, handleSubmit }) => {
+  const { translate } = useLanguage();
+  
   const services = [
-    'Website Development',
-    'Digital Marketing',
-    'Business Consulting',
-    'Management System',
-    'E-commerce Development',
-    'Mobile App Development',
-    'SEO Optimization',
-    'Lainnya'
+    translate('contact.service.web_dev'),
+    translate('contact.service.digital_marketing'),
+    translate('contact.service.business_consulting'),
+    translate('contact.service.management_system'),
+    translate('contact.service.ecommerce'),
+    translate('contact.service.mobile_app'),
+    translate('contact.service.seo'),
+    translate('contact.form.other')
   ];
 
   return (
@@ -32,13 +35,13 @@ const ContactForm = ({ formData, handleInputChange, handleSubmit }) => {
           >
             <div className="contact-form rounded-2xl p-8">
               <h3 className="text-2xl font-bold text-white mb-6">
-                Kirim Pesan Kepada Kami
+                {translate('contact.form.title')}
               </h3>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Nama Lengkap *
+                      {translate('contact.form.name')} {translate('contact.form.required')}
                     </label>
                     <input
                       type="text"
@@ -47,12 +50,12 @@ const ContactForm = ({ formData, handleInputChange, handleSubmit }) => {
                       onChange={handleInputChange}
                       required
                       className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="Masukkan nama lengkap"
+                      placeholder={translate('contact.form.name_placeholder')}
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Email *
+                      {translate('contact.form.email')} {translate('contact.form.required')}
                     </label>
                     <input
                       type="email"
@@ -69,7 +72,7 @@ const ContactForm = ({ formData, handleInputChange, handleSubmit }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Nomor Telepon
+                      {translate('contact.form.phone')}
                     </label>
                     <input
                       type="tel"
@@ -77,12 +80,12 @@ const ContactForm = ({ formData, handleInputChange, handleSubmit }) => {
                       value={formData.phone}
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="+62 812 3456 7890"
+                      placeholder={translate('contact.form.phone_placeholder')}
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Nama Perusahaan
+                      {translate('contact.form.company')}
                     </label>
                     <input
                       type="text"
@@ -90,14 +93,14 @@ const ContactForm = ({ formData, handleInputChange, handleSubmit }) => {
                       value={formData.company}
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="PT. Nama Perusahaan"
+                      placeholder={translate('contact.form.company_placeholder')}
                     />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Layanan yang Dibutuhkan
+                    {translate('contact.form.service')}
                   </label>
                   <select
                     name="service"
@@ -105,7 +108,7 @@ const ContactForm = ({ formData, handleInputChange, handleSubmit }) => {
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
-                    <option value="">Pilih layanan</option>
+                    <option value="">{translate('contact.form.select_service')}</option>
                     {services.map((service) => (
                       <option key={service} value={service}>
                         {service}
@@ -116,7 +119,7 @@ const ContactForm = ({ formData, handleInputChange, handleSubmit }) => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Pesan *
+                    {translate('contact.form.message')} {translate('contact.form.required')}
                   </label>
                   <textarea
                     name="message"
@@ -125,7 +128,7 @@ const ContactForm = ({ formData, handleInputChange, handleSubmit }) => {
                     required
                     rows={5}
                     className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-                    placeholder="Ceritakan tentang proyek atau kebutuhan Anda..."
+                    placeholder={translate('contact.form.message_placeholder')}
                   />
                 </div>
 
@@ -134,7 +137,7 @@ const ContactForm = ({ formData, handleInputChange, handleSubmit }) => {
                   className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-lg py-3"
                 >
                   <Send className="mr-2 h-5 w-5" />
-                  Kirim Pesan
+                  {translate('contact.form.submit')}
                 </Button>
               </form>
             </div>
@@ -149,7 +152,7 @@ const ContactForm = ({ formData, handleInputChange, handleSubmit }) => {
           >
             {/* Map */}
             <div className="glass-effect rounded-2xl p-6">
-              <h3 className="text-xl font-bold text-white mb-4">Lokasi Kantor</h3>
+              <h3 className="text-xl font-bold text-white mb-4">{translate('contact.info.office')}</h3>
               <div className="aspect-video bg-slate-700 rounded-lg flex items-center justify-center">
                 <img  
                   alt="Peta lokasi kantor Caniel Agency di Kota Tangerang"
@@ -166,14 +169,14 @@ const ContactForm = ({ formData, handleInputChange, handleSubmit }) => {
 
             {/* Quick Actions */}
             <div className="glass-effect rounded-2xl p-6">
-              <h3 className="text-xl font-bold text-white mb-4">Aksi Cepat</h3>
+              <h3 className="text-xl font-bold text-white mb-4">{translate('contact.info.quick_actions')}</h3>
               <div className="space-y-4">
                 <Button 
                   className="w-full bg-green-600 hover:bg-green-700 justify-start"
                   onClick={handleSubmit}
                 >
                   <MessageCircle className="mr-3 h-5 w-5" />
-                  Chat WhatsApp
+                  {translate('contact.info.whatsapp')}
                 </Button>
                 <Button 
                   variant="outline"
@@ -181,7 +184,7 @@ const ContactForm = ({ formData, handleInputChange, handleSubmit }) => {
                   onClick={handleSubmit}
                 >
                   <Calendar className="mr-3 h-5 w-5" />
-                  Jadwalkan Meeting
+                  {translate('contact.info.schedule')}
                 </Button>
                 <Button 
                   variant="outline"
@@ -189,26 +192,26 @@ const ContactForm = ({ formData, handleInputChange, handleSubmit }) => {
                   onClick={handleSubmit}
                 >
                   <Users className="mr-3 h-5 w-5" />
-                  Konsultasi Tim
+                  {translate('contact.info.consultation')}
                 </Button>
               </div>
             </div>
 
             {/* Response Time */}
             <div className="glass-effect rounded-2xl p-6">
-              <h3 className="text-xl font-bold text-white mb-4">Waktu Respon</h3>
+              <h3 className="text-xl font-bold text-white mb-4">{translate('contact.info.response_time')}</h3>
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-300">Email</span>
-                  <span className="text-blue-400 font-medium">&lt; 24 jam</span>
+                  <span className="text-gray-300">{translate('contact.info.email_response')}</span>
+                  <span className="text-blue-400 font-medium">{translate('contact.info.email_time')}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-300">WhatsApp</span>
-                  <span className="text-green-400 font-medium">&lt; 2 jam</span>
+                  <span className="text-gray-300">{translate('contact.info.whatsapp_response')}</span>
+                  <span className="text-green-400 font-medium">{translate('contact.info.whatsapp_time')}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-300">Telepon</span>
-                  <span className="text-yellow-400 font-medium">Langsung</span>
+                  <span className="text-gray-300">{translate('contact.info.phone_response')}</span>
+                  <span className="text-yellow-400 font-medium">{translate('contact.info.phone_time')}</span>
                 </div>
               </div>
             </div>

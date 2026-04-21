@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { useAuth } from '@/context/AuthContext';
 import { useBlog } from '@/context/BlogContext';
+import { useLanguage } from '@/context/LanguageContext';
 import ArticleEditor from '@/components/blog/ArticleEditor';
 import DeleteConfirmation from '@/components/blog/DeleteConfirmation';
 import LoginDialog from '@/components/auth/LoginDialog.jsx';
@@ -24,6 +25,7 @@ const Blog = () => {
   const { isAdmin, logout, login } = useAuth();
   const { posts, isInitialized, savePost, deletePost, getPublishedPosts, getFeaturedPosts, getRecentPosts } = useBlog();
   const { toast } = useToast();
+  const { translate } = useLanguage();
   const navigate = useNavigate();
 
   const publishedPosts = getPublishedPosts();
@@ -75,12 +77,12 @@ const Blog = () => {
   };
 
   const categories = [
-    { id: 'all', name: 'Semua Artikel', icon: Tag },
-    { id: 'web-development', name: 'Web Development', icon: Code },
-    { id: 'digital-marketing', name: 'Digital Marketing', icon: TrendingUp },
-    { id: 'business', name: 'Business Tips', icon: Users },
-    { id: 'technology', name: 'Technology', icon: Settings },
-    { id: 'tips', name: 'Tips & Tricks', icon: Lightbulb }
+    { id: 'all', name: translate('blog.filter.all'), icon: Tag },
+    { id: 'web-development', name: translate('blog.filter.web'), icon: Code },
+    { id: 'digital-marketing', name: translate('blog.filter.marketing'), icon: TrendingUp },
+    { id: 'business', name: translate('blog.filter.business'), icon: Users },
+    { id: 'technology', name: translate('blog.filter.tech'), icon: Settings },
+    { id: 'tips', name: translate('blog.filter.tips'), icon: Lightbulb }
   ];
 
   const filteredPosts = publishedPosts.filter(post =>
@@ -130,7 +132,7 @@ const Blog = () => {
                 className="glass-effect border-blue-500/50 text-blue-400 hover:bg-blue-600/20"
               >
                 <LayoutDashboard className="h-4 w-4 mr-2" />
-                CMS Dashboard
+                {translate('blog.cms_dashboard')}
               </Button>
               <Button
                 variant="outline"
@@ -139,7 +141,7 @@ const Blog = () => {
                 className="glass-effect border-red-500/50 text-red-400 hover:bg-red-600/20"
               >
                 <LogOut className="h-4 w-4 mr-2" />
-                Logout
+                {translate('blog.logout')}
               </Button>
             </div>
           )}
@@ -150,14 +152,14 @@ const Blog = () => {
               {isAdmin && (
                 <div className="mb-4 inline-flex items-center gap-2 px-4 py-2 bg-green-600/20 border border-green-500/30 rounded-full">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm text-green-400 font-medium">Mode Admin Aktif</span>
+                  <span className="text-sm text-green-400 font-medium">{translate('blog.admin_active')}</span>
                 </div>
               )}
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                <span className="gradient-text">Blog & Insights</span>
+                <span className="gradient-text">{translate('blog.hero.title')}</span>
               </h1>
               <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-                Wawasan terbaru dari Caniel Agency untuk pertumbuhan bisnis digital Anda.
+                {translate('blog.hero.subtitle')}
               </p>
             </motion.div>
           </div>
@@ -168,7 +170,7 @@ const Blog = () => {
             <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
               <div className="relative flex-1 max-w-md">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                <input type="text" placeholder="Cari artikel..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-10 pr-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                <input type="text" placeholder={translate('blog.search_placeholder')} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-10 pr-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
               </div>
               <div className="flex flex-wrap gap-2">
                 {categories.map((category) => (
@@ -186,15 +188,15 @@ const Blog = () => {
           <section className="py-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-center mb-16">
-                <h2 className="text-3xl md:text-4xl font-bold mb-6"><span className="gradient-text">Artikel Unggulan</span></h2>
-                <p className="text-xl text-gray-400 max-w-3xl mx-auto">Artikel pilihan yang paling banyak dibaca dan memberikan value terbaik.</p>
+                <h2 className="text-3xl md:text-4xl font-bold mb-6"><span className="gradient-text">{translate('blog.featured')}</span></h2>
+                <p className="text-xl text-gray-400 max-w-3xl mx-auto">{translate('blog.featured_desc')}</p>
               </motion.div>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {featuredPosts.map((post, index) => (
                   <motion.article key={post.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: index * 0.1 }} className="blog-card rounded-2xl overflow-hidden group">
                     <div className="relative overflow-hidden">
                       <img alt={post.title} className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" src="https://images.unsplash.com/photo-1595872018818-97555653a011" />
-                      <div className="absolute top-4 left-4"><span className="px-3 py-1 bg-blue-600 text-white rounded-full text-sm font-medium">Unggulan</span></div>
+                      <div className="absolute top-4 left-4"><span className="px-3 py-1 bg-blue-600 text-white rounded-full text-sm font-medium">{translate('blog.featured').split(' ')[0]}</span></div>
                     </div>
                     <div className="p-6">
                       <div className="flex items-center space-x-4 text-sm text-gray-400 mb-4">
@@ -206,7 +208,7 @@ const Blog = () => {
                       <p className="text-gray-400 mb-4 leading-relaxed">{post.excerpt}</p>
                       <div className="flex flex-wrap gap-2 mb-4">{post.tags.slice(0, 3).map(tag => <span key={tag} className="px-2 py-1 bg-gray-700 text-gray-300 rounded text-xs">#{tag}</span>)}</div>
                       <div className="flex justify-between items-center">
-                        <Link to={`/blog/${post.slug}`} className="text-blue-400 hover:text-blue-300 inline-flex items-center">Baca Selengkapnya<ArrowRight className="ml-2 h-4 w-4" /></Link>
+                        <Link to={`/blog/${post.slug}`} className="text-blue-400 hover:text-blue-300 inline-flex items-center">{translate('blog.read_more')}<ArrowRight className="ml-2 h-4 w-4" /></Link>
                         {isAdmin && (<div className="flex space-x-2"><Button variant="outline" size="icon" onClick={() => openEditor(post)}><Edit className="h-4 w-4" /></Button><Button variant="destructive" size="icon" onClick={() => openDeleteConfirm(post)}><Trash2 className="h-4 w-4" /></Button></div>)}
                       </div>
                     </div>
@@ -223,8 +225,8 @@ const Blog = () => {
               <div className="lg:col-span-2">
                 <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="mb-8 flex justify-between items-center">
                   <div>
-                    <h2 className="text-2xl md:text-3xl font-bold mb-2"><span className="gradient-text">{selectedCategory === 'all' ? 'Semua Artikel' : categories.find(cat => cat.id === selectedCategory)?.name}</span></h2>
-                    <p className="text-gray-400">Menampilkan {filteredPosts.length} artikel</p>
+                    <h2 className="text-2xl md:text-3xl font-bold mb-2"><span className="gradient-text">{selectedCategory === 'all' ? translate('blog.all_articles') : categories.find(cat => cat.id === selectedCategory)?.name}</span></h2>
+                    <p className="text-gray-400">{translate('blog.showing')} {filteredPosts.length} {translate('blog.articles')}</p>
                   </div>
                   {/* Tombol Artikel Baru - Hanya untuk admin */}
                   {isAdmin && (
@@ -233,7 +235,7 @@ const Blog = () => {
                       className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
                     >
                       <PlusCircle className="mr-2 h-5 w-5" />
-                      Artikel Baru
+                      {translate('blog.new_article')}
                     </Button>
                   )}
                 </motion.div>
@@ -250,7 +252,7 @@ const Blog = () => {
                              <div className="flex items-center text-sm text-gray-400"><User className="h-4 w-4 mr-1" />{post.author}</div>
                             <div className="flex items-center space-x-2">
                                {isAdmin && (<><Button variant="outline" size="icon" onClick={() => openEditor(post)}><Edit className="h-4 w-4" /></Button><Button variant="destructive" size="icon" onClick={() => openDeleteConfirm(post)}><Trash2 className="h-4 w-4" /></Button></>)}
-                              <Link to={`/blog/${post.slug}`} className="text-blue-400 hover:text-blue-300 inline-flex items-center text-sm">Baca<ArrowRight className="ml-2 h-4 w-4" /></Link>
+                              <Link to={`/blog/${post.slug}`} className="text-blue-400 hover:text-blue-300 inline-flex items-center text-sm">{translate('blog.read')}<ArrowRight className="ml-2 h-4 w-4" /></Link>
                             </div>
                           </div>
                         </div>
@@ -262,7 +264,7 @@ const Blog = () => {
               <div className="lg:col-span-1">
                 <div className="sticky top-24 space-y-8">
                   <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="glass-effect rounded-2xl p-6">
-                    <h3 className="text-xl font-bold text-white mb-6">Artikel Terbaru</h3>
+                    <h3 className="text-xl font-bold text-white mb-6">{translate('blog.recent_posts')}</h3>
                     <div className="space-y-4">
                       {recentPosts.map((post) => (
                         <Link to={`/blog/${post.slug}`} key={post.id} className="flex space-x-3 group cursor-pointer">
@@ -276,17 +278,17 @@ const Blog = () => {
                     </div>
                   </motion.div>
                   <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="glass-effect rounded-2xl p-6">
-                    <h3 className="text-xl font-bold text-white mb-6">Tag Populer</h3>
+                    <h3 className="text-xl font-bold text-white mb-6">{translate('blog.popular_tags')}</h3>
                     <div className="flex flex-wrap gap-2">
                       {['React', 'SEO', 'Digital Marketing', 'Business', 'Next.js', 'Analytics', 'UX/UI', 'Security'].map((tag) => (<span key={tag} onClick={() => handleAction(`Filter Tag: ${tag}`)} className="px-3 py-1 bg-gray-700 hover:bg-blue-600 text-gray-300 hover:text-white rounded-full text-sm cursor-pointer transition-colors">#{tag}</span>))}
                     </div>
                   </motion.div>
                   <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="glass-effect rounded-2xl p-6">
-                    <h3 className="text-xl font-bold text-white mb-4">Newsletter</h3>
-                    <p className="text-gray-400 text-sm mb-4">Dapatkan artikel terbaru langsung di email Anda</p>
+                    <h3 className="text-xl font-bold text-white mb-4">{translate('blog.newsletter')}</h3>
+                    <p className="text-gray-400 text-sm mb-4">{translate('blog.newsletter_desc')}</p>
                     <div className="space-y-3">
-                      <input type="email" placeholder="Email Anda" className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                      <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600" onClick={() => handleAction('Berlangganan Newsletter')}>Berlangganan</Button>
+                      <input type="email" placeholder={translate('blog.email_placeholder')} className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                      <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600" onClick={() => handleAction('Berlangganan Newsletter')}>{translate('blog.subscribe')}</Button>
                     </div>
                   </motion.div>
                 </div>

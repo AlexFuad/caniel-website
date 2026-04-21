@@ -170,6 +170,199 @@ body {
   border-color: rgba(139, 92, 246, 0.3);
 }
 
+/* Enhanced Light Mode Styles */
+.light {
+  color-scheme: light;
+}
+
+.light body {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+  color: #1e293b;
+}
+
+/* Light mode for background gradients */
+.light .bg-gradient-to-br.from-slate-900.to-slate-800 {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+}
+
+.light .bg-slate-800\/30 {
+  background: rgba(226, 232, 240, 0.3);
+}
+
+.light .bg-slate-800\/50 {
+  background: rgba(226, 232, 240, 0.5);
+}
+
+/* Light mode for text colors */
+.light .text-gray-300 {
+  color: #64748b;
+}
+
+.light .text-gray-400 {
+  color: #475569;
+}
+
+.light .text-gray-500 {
+  color: #334155;
+}
+
+.light .text-gray-600 {
+  color: #1e293b;
+}
+
+/* Light mode for white text */
+.light .text-white {
+  color: #1e293b;
+}
+
+/* Light mode for borders */
+.light .border-slate-700 {
+  border-color: #cbd5e1;
+}
+
+.light .border-slate-600 {
+  border-color: #94a3b8;
+}
+
+.light .border-gray-700 {
+  border-color: #cbd5e1;
+}
+
+/* Light mode for backgrounds */
+.light .bg-slate-700 {
+  background: #e2e8f0;
+}
+
+.light .bg-slate-600 {
+  background: #cbd5e1;
+}
+
+.light .bg-gray-700 {
+  background: #e2e8f0;
+}
+
+.light .bg-gray-800 {
+  background: #cbd5e1;
+}
+
+/* Light mode for inputs and forms */
+.light input[type="text"],
+.light input[type="email"],
+.light input[type="tel"],
+.light input[type="password"],
+.light textarea,
+.light select {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #1e293b !important;
+}
+
+.light input::placeholder,
+.light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Light mode for buttons */
+.light .bg-gradient-to-r.from-blue-600.to-purple-600 {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+}
+
+.light .border-blue-500 {
+  border-color: #3b82f6;
+}
+
+.light .text-blue-400 {
+  color: #3b82f6;
+}
+
+.light .text-purple-400 {
+  color: #8b5cf6;
+}
+
+/* Light mode for hover states */
+.light .hover\:bg-blue-500:hover {
+  background: #3b82f6;
+}
+
+.light .hover\:text-white:hover {
+  color: #1e293b;
+}
+
+/* Light mode for specific sections */
+.light section {
+  color: #1e293b;
+}
+
+.light h1,
+.light h2,
+.light h3,
+.light h4,
+.light h5,
+.light h6 {
+  color: #1e293b;
+}
+
+.light p {
+  color: #334155;
+}
+
+/* Light mode for footer */
+.light footer {
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%);
+  border-top-color: #cbd5e1;
+}
+
+.light footer .text-gray-400 {
+  color: #64748b;
+}
+
+/* Light mode for navigation */
+.light .nav-link {
+  color: #334155;
+}
+
+.light .nav-link:hover {
+  color: #3b82f6;
+}
+
+.light .nav-link.active {
+  color: #3b82f6;
+}
+
+/* Light mode for cards and containers */
+.light .glass-effect {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #1e293b;
+}
+
+/* Light mode for badges and tags */
+.light .px-3.py-1.bg-blue-600\/20 {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.light .px-2.py-1.bg-gray-700 {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+/* Light mode for statistics and metrics */
+.light .text-green-400 {
+  color: #10b981;
+}
+
+.light .text-yellow-400 {
+  color: #f59e0b;
+}
+
+/* Light mode for scroll to top button */
+.light .fixed.bottom-8.right-8 {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
 .nav-link {
   position: relative;
   transition: all 0.3s ease;

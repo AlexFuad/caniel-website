@@ -14,10 +14,12 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import { useLanguage } from '@/context/LanguageContext';
 
 const Portfolio = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const { toast } = useToast();
+  const { translate } = useLanguage();
 
   const handleViewProject = () => {
     toast({
@@ -27,11 +29,11 @@ const Portfolio = () => {
   };
 
   const categories = [
-    { id: 'all', name: 'Semua Proyek', icon: Filter },
-    { id: 'website', name: 'Website Development', icon: Code },
-    { id: 'marketing', name: 'Digital Marketing', icon: TrendingUp },
-    { id: 'consulting', name: 'Business Consulting', icon: Users },
-    { id: 'system', name: 'Management System', icon: Settings }
+    { id: 'all', name: translate('portfolio.filter.all'), icon: Filter },
+    { id: 'website', name: translate('portfolio.filter.web'), icon: Code },
+    { id: 'marketing', name: translate('portfolio.filter.marketing'), icon: TrendingUp },
+    { id: 'consulting', name: translate('portfolio.filter.consulting'), icon: Users },
+    { id: 'system', name: translate('portfolio.filter.system'), icon: Settings }
   ];
 
   const projects = [
@@ -149,11 +151,10 @@ const Portfolio = () => {
               className="text-center"
             >
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                <span className="gradient-text">Portfolio & Media</span>
+                <span className="gradient-text">{translate('portfolio.hero.title')}</span>
               </h1>
               <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-                Jelajahi proyek-proyek yang telah kami kerjakan dan hasil nyata 
-                yang kami capai untuk berbagai klien di berbagai industri
+                {translate('portfolio.hero.subtitle')}
               </p>
             </motion.div>
           </div>
@@ -221,7 +222,7 @@ const Portfolio = () => {
                               onClick={handleViewProject}
                             >
                               <Eye className="h-4 w-4 mr-2" />
-                              Lihat Detail
+                              {translate('portfolio.view_project')}
                             </Button>
                             <Button
                               size="sm"
@@ -256,7 +257,7 @@ const Portfolio = () => {
                       </p>
 
                       <div className="mb-4">
-                        <p className="text-sm text-gray-500 mb-2">Klien: {project.client}</p>
+                        <p className="text-sm text-gray-500 mb-2">{translate('portfolio.client')}: {project.client}</p>
                         <div className="flex flex-wrap gap-1">
                           {project.technologies.slice(0, 3).map((tech) => (
                             <span
@@ -268,14 +269,14 @@ const Portfolio = () => {
                           ))}
                           {project.technologies.length > 3 && (
                             <span className="px-2 py-1 bg-gray-700 text-gray-300 rounded text-xs">
-                              +{project.technologies.length - 3} lainnya
+                              +{project.technologies.length - 3} {translate('portfolio.more')}
                             </span>
                           )}
                         </div>
                       </div>
 
                       <div className="border-t border-gray-700 pt-4">
-                        <p className="text-sm font-medium text-white mb-2">Hasil Utama:</p>
+                        <p className="text-sm font-medium text-white mb-2">{translate('portfolio.results')}:</p>
                         <ul className="space-y-1">
                           {project.results.slice(0, 2).map((result, idx) => (
                             <li key={idx} className="text-xs text-green-400 flex items-center">
@@ -303,19 +304,19 @@ const Portfolio = () => {
               className="text-center mb-16"
             >
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                <span className="gradient-text">Pencapaian Portfolio</span>
+                <span className="gradient-text">{translate('portfolio.stats.title')}</span>
               </h2>
               <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Angka-angka yang menunjukkan dampak nyata dari proyek-proyek kami
+                {translate('portfolio.stats.subtitle')}
               </p>
             </motion.div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {[
-                { number: '500+', label: 'Proyek Selesai', description: 'Berbagai jenis proyek' },
-                { number: '200+', label: 'Klien Puas', description: 'Dari berbagai industri' },
-                { number: '95%', label: 'Success Rate', description: 'Tingkat keberhasilan proyek' },
-                { number: '24/7', label: 'Support', description: 'Dukungan berkelanjutan' }
+                { number: '500+', label: translate('portfolio.completed'), description: translate('portfolio.completed_desc') },
+                { number: '200+', label: translate('portfolio.satisfied'), description: translate('portfolio.satisfied_desc') },
+                { number: '95%', label: translate('portfolio.success_rate'), description: translate('portfolio.success_desc') },
+                { number: '24/7', label: translate('portfolio.support'), description: translate('portfolio.support_desc') }
               ].map((stat, index) => (
                 <motion.div
                   key={stat.label}
@@ -345,10 +346,10 @@ const Portfolio = () => {
               className="glass-effect rounded-3xl p-12 text-center"
             >
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                <span className="gradient-text">Siap Menjadi Bagian dari Portfolio Kami?</span>
+                <span className="gradient-text">{translate('portfolio.cta.title')}</span>
               </h2>
               <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-                Mari diskusikan proyek Anda dan ciptakan hasil yang luar biasa bersama tim ahli kami
+                {translate('portfolio.cta.subtitle')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
@@ -356,7 +357,7 @@ const Portfolio = () => {
                   className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-lg px-8 py-4"
                   onClick={handleViewProject}
                 >
-                  Mulai Proyek Anda
+                  {translate('portfolio.cta.start')}
                 </Button>
                 <Button 
                   variant="outline" 
@@ -364,7 +365,7 @@ const Portfolio = () => {
                   className="border-2 border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white text-lg px-8 py-4"
                   onClick={handleViewProject}
                 >
-                  Lihat Semua Portfolio
+                  {translate('portfolio.view_all')}
                 </Button>
               </div>
             </motion.div>
